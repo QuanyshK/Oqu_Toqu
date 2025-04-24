@@ -14,7 +14,7 @@
         android:title="Hack Link" />
 
     <item
-        android:id="@+id/profile"
+        android:id="@+id/profileFragment"
         android:icon="@drawable/ic_launcher_foreground"
         android:title="Profile" />
 </menu>

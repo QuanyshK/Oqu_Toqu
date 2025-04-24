@@ -6,6 +6,7 @@ import android.view.*
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.example.oqutoqu.R
 import com.example.oqutoqu.databinding.FragmentLoginBinding
 import com.example.oqutoqu.viewmodel.AuthViewModel
@@ -29,6 +30,7 @@ class LoginFragment : Fragment() {
                 authViewModel.loginWithGoogle(idToken) { success ->
                     if (success) {
                         Toast.makeText(requireContext(), "Login Successful!", Toast.LENGTH_SHORT).show()
+                        findNavController().navigate(R.id.action_loginFragment_to_profileFragment)
                     } else {
                         Toast.makeText(requireContext(), "Error", Toast.LENGTH_SHORT).show()
                     }

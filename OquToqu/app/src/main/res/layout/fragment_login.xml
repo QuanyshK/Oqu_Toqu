@@ -6,11 +6,12 @@
     android:layout_height="match_parent"
     android:padding="32dp">
 
-    <Button
-        android:id="@+id/btn_google_sign_in"
+    <com.google.android.gms.common.SignInButton
+        android:id="@+id/btnGoogleSignIn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Sign in with Google"
-        android:backgroundTint="@android:color/holo_blue_light" />
+        android:layout_gravity="center"
+        android:layout_marginTop="24dp" />
+
 
 </LinearLayout>
