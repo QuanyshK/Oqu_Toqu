@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">Oqu Toqu</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="default_web_client_id">772824487435-fi319v21snsa3j19u1qtbur2rrheq0a8.apps.googleusercontent.com</string>
 </resources>

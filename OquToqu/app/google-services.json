@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "772824487435",
+    "project_id": "oqu-toqu-firebase",
+    "storage_bucket": "oqu-toqu-firebase.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:772824487435:android:3dd2aea3a00bc0a0ce190e",
+        "android_client_info": {
+          "package_name": "com.example.oqutoqu"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "772824487435-d2o5meu0qeahk48uaf157f25oscah4tm.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.oqutoqu",
+            "certificate_hash": "cf5a33436e7d640b75a6678616f6ebea726be7bc"
+          }
+        },
+        {
+          "client_id": "772824487435-fi319v21snsa3j19u1qtbur2rrheq0a8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBhpsvC2oNvk6CA-mDZWkaHwupqMEMUHwY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "772824487435-fi319v21snsa3j19u1qtbur2rrheq0a8.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

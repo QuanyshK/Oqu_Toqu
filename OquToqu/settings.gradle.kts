@@ -13,12 +13,14 @@ pluginManagement {
 }
 dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
-    repositories {
-        google()
-        mavenCentral()
-    }
+        repositories {
+            gradlePluginPortal()
+            google()
+            mavenCentral()
+        }
 }
 
 rootProject.name = "Oqu Toqu"
 include(":app")
- 
+include(":domain")
+include(":data")

@@ -1,0 +1,68 @@
+package com.example.oqutoqu.view.fragment
+
+import android.content.Intent
+import android.os.Bundle
+import android.view.*
+import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.fragment.app.Fragment
+import com.example.oqutoqu.R
+import com.example.oqutoqu.databinding.FragmentLoginBinding
+import com.example.oqutoqu.viewmodel.AuthViewModel
+import com.google.android.gms.auth.api.signin.*
+import com.google.android.gms.common.api.ApiException
+import org.koin.androidx.viewmodel.ext.android.viewModel
+
+class LoginFragment : Fragment() {
+
+    private var _binding: FragmentLoginBinding? = null
+    private val binding get() = _binding!!
+
+    private val authViewModel: AuthViewModel by viewModel()
+
+    private val launcher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        val task = GoogleSignIn.getSignedInAccountFromIntent(result.data)
+        try {
+            val account = task.getResult(ApiException::class.java)
+            val idToken = account.idToken
+            if (idToken != null) {
+                authViewModel.loginWithGoogle(idToken) { success ->
+                    if (success) {
+                        Toast.makeText(requireContext(), "Login Successful!", Toast.LENGTH_SHORT).show()
+                    } else {
+                        Toast.makeText(requireContext(), "Error", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
+        } catch (e: ApiException) {
+            Toast.makeText(requireContext(), "Error of Google Sign-In", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+        _binding = FragmentLoginBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        binding.btnGoogleSignIn.setOnClickListener {
+        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestIdToken(getString(R.string.default_web_client_id))
+            .requestEmail()
+            .build()
+
+        val client = GoogleSignIn.getClient(requireContext(), gso)
+
+        client.revokeAccess().addOnCompleteListener {
+            client.signOut().addOnCompleteListener {
+                launcher.launch(client.signInIntent)
+            }
+        }
+    }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+}
