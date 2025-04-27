@@ -10,56 +10,49 @@ import androidx.navigation.fragment.findNavController
 import com.example.oqutoqu.R
 import com.example.oqutoqu.databinding.FragmentLoginBinding
 import com.example.oqutoqu.viewmodel.AuthViewModel
-import com.google.android.gms.auth.api.signin.*
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class LoginFragment : Fragment() {
-
     private var _binding: FragmentLoginBinding? = null
     private val binding get() = _binding!!
-
     private val authViewModel: AuthViewModel by viewModel()
 
-    private val launcher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+    private val launcher = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { result ->
         val task = GoogleSignIn.getSignedInAccountFromIntent(result.data)
         try {
-            val account = task.getResult(ApiException::class.java)
-            val idToken = account?.idToken
-            if (!idToken.isNullOrEmpty()) {
-                authViewModel.loginWithGoogle(idToken) { success ->
+            val acct = task.getResult(ApiException::class.java)
+            acct?.idToken?.let { token ->
+                authViewModel.loginWithGoogle(token) { success ->
                     if (success) {
-                        Toast.makeText(requireContext(), "Login Successful!", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(requireContext(), "Login OK", Toast.LENGTH_SHORT).show()
                         findNavController().navigate(R.id.action_loginFragment_to_profileFragment)
                     } else {
-                        Toast.makeText(requireContext(), "Authentication Failed!", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(requireContext(), "Auth failed", Toast.LENGTH_SHORT).show()
                     }
                 }
             }
         } catch (e: ApiException) {
-            Toast.makeText(requireContext(), "Google Sign-In Error: ${e.localizedMessage}", Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), "Google SignIn Error", Toast.LENGTH_SHORT).show()
         }
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        _binding = FragmentLoginBinding.inflate(inflater, container, false)
-        return binding.root
-    }
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
+    ) = FragmentLoginBinding.inflate(inflater, container, false).also { _binding = it }.root
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
         binding.btnGoogleSignIn.setOnClickListener {
             val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
                 .build()
-
             val client = GoogleSignIn.getClient(requireContext(), gso)
-
-            client.signOut().addOnCompleteListener {
-                launcher.launch(client.signInIntent)
-            }
+            client.signOut().addOnCompleteListener { launcher.launch(client.signInIntent) }
         }
     }
 

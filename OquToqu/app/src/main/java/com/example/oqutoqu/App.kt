@@ -13,9 +13,10 @@ class App : Application() {
         startKoin {
             androidContext(this@App)
             modules(
-                authModule,
-                profileModule,
-                scienceModule
+            networkModule,
+            authModule,
+            profileModule,
+            scienceModule
             )
         }
     }

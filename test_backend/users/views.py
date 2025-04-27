@@ -6,8 +6,11 @@ from .models import User
 from .serializers import UserSerializer
 import jwt
 from django.conf import settings
+from rest_framework.permissions import AllowAny
 
 class GoogleLoginView(APIView):
+    permission_classes = [AllowAny]
+    authentication_classes = []
     def post(self, request):
         id_token = request.data.get('idToken')
 

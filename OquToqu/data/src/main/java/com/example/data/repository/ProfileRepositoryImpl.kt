@@ -6,6 +6,9 @@ import com.google.firebase.auth.FirebaseAuth
 class ProfileRepositoryImpl(
     private val firebaseAuth: FirebaseAuth
 ) : ProfileRepository {
-    override fun getCurrentUserEmail(): String? = firebaseAuth.currentUser?.email
-    override fun logout() = firebaseAuth.signOut()
+    override fun getCurrentUserEmail(): String? =
+        firebaseAuth.currentUser?.email
+    override fun logout() {
+        firebaseAuth.signOut()
+    }
 }

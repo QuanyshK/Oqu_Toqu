@@ -13,11 +13,18 @@ pluginManagement {
 }
 dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
-        repositories {
-            gradlePluginPortal()
-            google()
-            mavenCentral()
+    repositories {
+        google()
+        mavenCentral()
+        maven {
+            name = "GitHubPackages"
+            url = uri("https://maven.pkg.github.com/QuanyshK/scihubparser")
+            credentials {
+                username = System.getenv("GITHUB_USER")
+                password = System.getenv("GITHUB_PASSWORD")
+            }
         }
+    }
 }
 
 rootProject.name = "Oqu Toqu"

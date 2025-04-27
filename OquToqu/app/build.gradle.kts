@@ -74,4 +74,9 @@ dependencies {
     implementation(libs.androidx.navigation.fragment.ktx)
     implementation(libs.androidx.navigation.ui.ktx)
     implementation(libs.shparser)
+    implementation(libs.retrofit)
+    implementation(libs.okhttp)
+    implementation(libs.logging)
+    implementation (libs.converter)
+
 }

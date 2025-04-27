@@ -17,7 +17,7 @@ from firebase_admin import credentials
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-cred = credentials.Certificate(BASE_DIR / 'test_backend' / 'oqu-toqu-firebase-firebase-adminsdk-fbsvc-b3897e42c5.json')
+cred = credentials.Certificate(BASE_DIR / 'test_backend' / 'oqu-toqu-firebase-firebase-adminsdk-fbsvc-e9d9b0e463.json')
 firebase_admin.initialize_app(cred)
 
 
@@ -30,7 +30,7 @@ SECRET_KEY = 'django-insecure-tm_$*lhh489f3zf*fpni04gyci1d=-gar1p(f+8hyo2%fpvnbf
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 AUTH_USER_MODEL = 'users.User'
 

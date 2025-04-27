@@ -11,10 +11,13 @@
 **/captures/
 .cxx/
 local.properties
-
+settings.gradle.kts
+gradle.properties
+/home/quanysh/Documents/GitHub/Oqu_Toqu/OquToqu/gradle.properties
+/home/quanysh/Documents/GitHub/Oqu_Toqu/OquToqu/gradle.properties
 # Хранить только под OquToqu/
-/OquToqu/gradle.properties
-/OquToqu/settings.gradle.kts
+/.OquToqu/gradle.properties
+/.OquToqu/settings.gradle.kts
 /OquToqu/local.properties
 
 # Секреты Django-бэкенда
