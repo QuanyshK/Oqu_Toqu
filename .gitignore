@@ -13,9 +13,9 @@
 local.properties
 
 # Хранить только под OquToqu/
-OquToqu/local.properties
-OquToqu/gradle.properties
-OquToqu/settings.gradle.kts
+/OquToqu/gradle.properties
+/OquToqu/settings.gradle.kts
+/OquToqu/local.properties
 
 # Секреты Django-бэкенда
 test_backend/test_backend/*.json
