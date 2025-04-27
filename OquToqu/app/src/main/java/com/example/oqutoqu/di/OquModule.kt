@@ -8,6 +8,9 @@ import com.example.domain.usecase.GetCurrentUserUseCase
 import com.example.domain.usecase.LogoutUseCase
 import com.example.oqutoqu.viewmodel.AuthViewModel
 import com.example.oqutoqu.viewmodel.ProfileViewModel
+import com.example.data.repository.SciHubRepositoryImpl
+import com.example.domain.repository.SciHubRepository
+import com.example.oqutoqu.viewmodel.ScienceViewModel
 import com.google.firebase.auth.FirebaseAuth
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
@@ -23,4 +26,9 @@ val profileModule = module {
     factory { GetCurrentUserUseCase(get()) }
     factory { LogoutUseCase(get()) }
     viewModel { ProfileViewModel(get(), get()) }
+}
+
+val scienceModule = module {
+    single<SciHubRepository> { SciHubRepositoryImpl() }
+    viewModel { ScienceViewModel(get()) }
 }

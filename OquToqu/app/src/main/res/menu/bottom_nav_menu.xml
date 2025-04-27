@@ -9,9 +9,9 @@
         android:icon="@drawable/ic_launcher_foreground"
         android:title="Chat" />
     <item
-        android:id="@+id/hackLink"
+        android:id="@+id/scienceFragment"
         android:icon="@drawable/ic_launcher_foreground"
-        android:title="Hack Link" />
+        android:title="Sci Hack" />
 
     <item
         android:id="@+id/profileFragment"

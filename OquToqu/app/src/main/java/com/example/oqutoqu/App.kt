@@ -14,7 +14,8 @@ class App : Application() {
             androidContext(this@App)
             modules(
                 authModule,
-                profileModule
+                profileModule,
+                scienceModule
             )
         }
     }

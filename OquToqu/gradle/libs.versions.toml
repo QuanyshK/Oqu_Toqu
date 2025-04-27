@@ -20,6 +20,7 @@ koin-bom = "4.0.2"
 navigation = "2.8.9"
 navigationFragmentKtx = "2.8.9"
 navigationUiKtx = "2.8.9"
+shparser = "1.1.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -46,6 +47,7 @@ navigation-fragment = { group = "androidx.navigation", name = "navigation-fragme
 navigation-ui = { group = "androidx.navigation", name = "navigation-ui", version.ref = "navigation" }
 androidx-navigation-fragment-ktx = { group = "androidx.navigation", name = "navigation-fragment-ktx", version.ref = "navigationFragmentKtx" }
 androidx-navigation-ui-ktx = { group = "androidx.navigation", name = "navigation-ui-ktx", version.ref = "navigationUiKtx" }
+shparser = { module = "com.github.quanyshk:scihubparser", version.ref = "shparser" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

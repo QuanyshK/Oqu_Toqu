@@ -25,19 +25,19 @@ class LoginFragment : Fragment() {
         val task = GoogleSignIn.getSignedInAccountFromIntent(result.data)
         try {
             val account = task.getResult(ApiException::class.java)
-            val idToken = account.idToken
-            if (idToken != null) {
+            val idToken = account?.idToken
+            if (!idToken.isNullOrEmpty()) {
                 authViewModel.loginWithGoogle(idToken) { success ->
                     if (success) {
                         Toast.makeText(requireContext(), "Login Successful!", Toast.LENGTH_SHORT).show()
                         findNavController().navigate(R.id.action_loginFragment_to_profileFragment)
                     } else {
-                        Toast.makeText(requireContext(), "Error", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(requireContext(), "Authentication Failed!", Toast.LENGTH_SHORT).show()
                     }
                 }
             }
         } catch (e: ApiException) {
-            Toast.makeText(requireContext(), "Error of Google Sign-In", Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), "Google Sign-In Error: ${e.localizedMessage}", Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -47,20 +47,20 @@ class LoginFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
         binding.btnGoogleSignIn.setOnClickListener {
-        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-            .requestIdToken(getString(R.string.default_web_client_id))
-            .requestEmail()
-            .build()
+            val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.default_web_client_id))
+                .requestEmail()
+                .build()
 
-        val client = GoogleSignIn.getClient(requireContext(), gso)
+            val client = GoogleSignIn.getClient(requireContext(), gso)
 
-        client.revokeAccess().addOnCompleteListener {
             client.signOut().addOnCompleteListener {
                 launcher.launch(client.signInIntent)
             }
         }
-    }
     }
 
     override fun onDestroyView() {

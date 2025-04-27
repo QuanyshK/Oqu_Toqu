@@ -54,9 +54,7 @@ dependencies {
     androidTestImplementation(libs.androidx.espresso.core)
     implementation("com.google.firebase:firebase-auth-ktx")
     implementation("com.google.android.gms:play-services-auth:21.3.0")
-
-    // glide
-    implementation(libs.glide)
+    implementation("org.jsoup:jsoup:1.19.1")
 
     // viewmodel
     implementation(libs.lifecycle.viewmodel)
@@ -75,4 +73,5 @@ dependencies {
     implementation(project(":data"))
     implementation(libs.androidx.navigation.fragment.ktx)
     implementation(libs.androidx.navigation.ui.ktx)
+    implementation(libs.shparser)
 }
