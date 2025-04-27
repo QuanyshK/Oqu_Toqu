@@ -13,6 +13,7 @@
 local.properties
 settings.gradle.kts
 gradle.properties
+
 # Хранить только под OquToqu/
 /OquToqu/app/google-services.json
 # Секреты Django-бэкенда
