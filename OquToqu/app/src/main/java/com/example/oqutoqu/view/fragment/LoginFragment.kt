@@ -7,6 +7,7 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import com.example.data.manager.AuthManager
 import com.example.oqutoqu.R
 import com.example.oqutoqu.databinding.FragmentLoginBinding
 import com.example.oqutoqu.viewmodel.AuthViewModel
@@ -19,7 +20,7 @@ class LoginFragment : Fragment() {
     private var _binding: FragmentLoginBinding? = null
     private val binding get() = _binding!!
     private val authViewModel: AuthViewModel by viewModel()
-
+    private val authManager by lazy { AuthManager(requireContext()) }
     private val launcher = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
     ) { result ->

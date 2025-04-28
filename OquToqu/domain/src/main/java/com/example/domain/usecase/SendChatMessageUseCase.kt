@@ -3,8 +3,9 @@ package com.example.domain.usecase
 import com.example.domain.repository.ChatRepository
 
 class SendChatMessageUseCase(
-    private val repo: ChatRepository
+    private val repository: ChatRepository
 ) {
-    suspend operator fun invoke(text: String, filePath: String? = null) =
-        repo.sendMessage(text, filePath)
+    suspend operator fun invoke(text: String?, fileUri: String?) {
+        repository.sendMessage(text, fileUri)
+    }
 }

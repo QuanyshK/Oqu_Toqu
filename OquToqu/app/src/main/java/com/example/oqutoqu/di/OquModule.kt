@@ -1,6 +1,7 @@
 package com.example.oqutoqu.di
 
 import androidx.room.Room
+import com.example.data.manager.AuthManager
 import com.example.data.repository.AuthRepositoryImpl
 import com.example.data.repository.ChatRepositoryImpl
 import com.example.data.repository.ProfileRepositoryImpl
@@ -12,6 +13,7 @@ import com.example.oqutoqu.viewmodel.ProfileViewModel
 import com.example.data.repository.SciHubRepositoryImpl
 import com.example.data.source.local.AppDatabase
 import com.example.data.source.remote.AuthApi
+import com.example.data.source.remote.AuthInterceptor
 import com.example.domain.repository.ChatRepository
 import com.example.domain.repository.SciHubRepository
 import com.example.domain.usecase.GetChatMessagesUseCase
@@ -28,10 +30,11 @@ import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-
+import org.koin.core.module.dsl.*
+import org.koin.androidx.viewmodel.dsl.viewModelOf
 val authModule = module {
     single { FirebaseAuth.getInstance() }
-    single<AuthRepository> { AuthRepositoryImpl(get(), get()) }
+    single<AuthRepository> { AuthRepositoryImpl(get(), get(), get()) }
     factory<SignInWithGoogleUseCase> { SignInWithGoogleUseCase(get()) }
     viewModel { AuthViewModel(get()) }
 }
@@ -47,17 +50,23 @@ val scienceModule = module {
     single<SciHubRepository> { SciHubRepositoryImpl() }
     viewModel { ScienceViewModel(get()) }
 }
-private const val BASE_URL = "http://192.168.0.17:8080/"
+private const val BASE_URL = "http://192.168.0.10:8080/"
 
 val networkModule = module {
+
+    single { AuthManager(androidContext()) }
+
     single {
         HttpLoggingInterceptor().apply {
             level = HttpLoggingInterceptor.Level.BODY
         }
     }
 
+    single { AuthInterceptor(get()) }
+
     single {
         OkHttpClient.Builder()
+            .addInterceptor(get<AuthInterceptor>())
             .addInterceptor(get<HttpLoggingInterceptor>())
             .build()
     }
@@ -69,27 +78,26 @@ val networkModule = module {
             .addConverterFactory(GsonConverterFactory.create())
             .build()
     }
+
     single<AuthApi> {
         get<Retrofit>().create(AuthApi::class.java)
     }
 }
-val chatModule = module {
 
+val chatModule = module {
     single {
         Room.databaseBuilder(
             androidContext(),
             AppDatabase::class.java,
             "app_database"
-        )
-            .fallbackToDestructiveMigration()
-            .build()
+        ).fallbackToDestructiveMigration().build()
     }
     single { get<AppDatabase>().chatDao() }
 
-    single<ChatRepository> { ChatRepositoryImpl(get(), get()) }
+    singleOf(::ChatRepositoryImpl) { bind<ChatRepository>() }
 
-    factory { GetChatMessagesUseCase(get()) }
-    factory { SendChatMessageUseCase(get()) }
+    factoryOf(::GetChatMessagesUseCase)
+    factoryOf(::SendChatMessageUseCase)
 
-    viewModel { ChatViewModel(get(), get()) }
+    viewModelOf(::ChatViewModel)
 }

@@ -21,6 +21,12 @@ from bs4 import BeautifulSoup
 from .models import ChatMessage
 from .serializers import ChatMessageSerializer, ChatCreateSerializer
 from .services import GeminiService
+from rest_framework.authentication import BaseAuthentication
+from rest_framework import exceptions
+
+
+from rest_framework.generics import ListAPIView
+
 
 class GoogleLoginView(APIView):
     permission_classes = [AllowAny]
@@ -46,7 +52,7 @@ class GoogleLoginView(APIView):
             'user': UserSerializer(user).data
         })
 
-
+    
 def extract_text_from_pdf(path: str) -> str:
     text = ""
     with open(path, 'rb') as f:
@@ -61,12 +67,20 @@ def extract_text_from_docx(path: str) -> str:
     return "\n".join(p.text for p in doc.paragraphs)
 
 
-class ChatMessageListView(generics.ListAPIView):
+class ChatMessageListView(ListAPIView):
     serializer_class = ChatMessageSerializer
     permission_classes = [permissions.IsAuthenticated]
 
     def get_queryset(self):
         return ChatMessage.objects.filter(user=self.request.user).order_by('created_at')
+
+    def list(self, request, *args, **kwargs):
+        queryset = self.get_queryset()
+        serializer = self.get_serializer(queryset, many=True)
+        return Response({
+            "messages": serializer.data
+        })
+
 
 
 class ChatMessageCreateView(APIView):
@@ -91,7 +105,7 @@ class ChatMessageCreateView(APIView):
 
         text = serializer.validated_data.get('message', '')
         file_obj = request.FILES.get('file')
-        file_name = request.data.get('file_name', '')
+        file_name = file_obj.name if file_obj else ''
 
         # если пришёл файл — сохраним, извлечём текст, удалим
         if file_obj:

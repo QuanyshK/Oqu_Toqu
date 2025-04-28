@@ -3,7 +3,6 @@ package com.example.oqutoqu.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.domain.usecase.SignInWithGoogleUseCase
-import com.example.domain.usecase.LogoutUseCase
 import kotlinx.coroutines.launch
 
 class AuthViewModel(
@@ -12,8 +11,8 @@ class AuthViewModel(
 
     fun loginWithGoogle(idToken: String, callback: (Boolean) -> Unit) {
         viewModelScope.launch {
-            val ok = signInUseCase(idToken)
-            callback(ok)
+            val token = signInUseCase(idToken)
+            callback(token != null)
         }
     }
 }
