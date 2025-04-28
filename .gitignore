@@ -18,4 +18,4 @@ gradle.properties
 /OquToqu/app/google-services.json
 # Секреты Django-бэкенда
 test_backend/test_backend/*.json
-
+.env

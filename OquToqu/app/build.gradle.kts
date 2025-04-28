@@ -2,7 +2,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     id("com.google.gms.google-services")
-
+    alias(libs.plugins.ksp)
 
 }
 
@@ -55,7 +55,8 @@ dependencies {
     implementation("com.google.firebase:firebase-auth-ktx")
     implementation("com.google.android.gms:play-services-auth:21.3.0")
     implementation("org.jsoup:jsoup:1.19.1")
-
+    implementation(libs.room.runtime)
+    implementation(libs.room.ktx)
     // viewmodel
     implementation(libs.lifecycle.viewmodel)
 

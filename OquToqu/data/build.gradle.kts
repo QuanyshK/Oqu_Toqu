@@ -55,4 +55,7 @@ dependencies {
     androidTestImplementation(libs.androidx.espresso.core)
     implementation(libs.shparser)
     implementation(libs.retrofit)
+    implementation(libs.okhttp)
+    implementation(libs.logging)
+    implementation (libs.converter)
 }

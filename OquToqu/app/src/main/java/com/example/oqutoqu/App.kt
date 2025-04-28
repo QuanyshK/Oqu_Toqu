@@ -16,7 +16,8 @@ class App : Application() {
             networkModule,
             authModule,
             profileModule,
-            scienceModule
+            scienceModule,
+                chatModule
             )
         }
     }
