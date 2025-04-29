@@ -2,6 +2,7 @@ package com.example.data.repository
 
 import android.content.Context
 import android.net.Uri
+import android.provider.OpenableColumns
 import com.example.data.source.remote.AuthApi
 import com.example.domain.model.ChatMessage
 import com.example.domain.repository.ChatRepository
@@ -14,19 +15,16 @@ import java.io.File
 
 class ChatRepositoryImpl(
     private val context: Context,
-    private val chatApi: AuthApi
+    private val authApi: AuthApi
 ) : ChatRepository {
 
     override suspend fun getMessages(): List<ChatMessage> {
-        val remoteResponse = chatApi.getMessages()
-        val body = remoteResponse.body()
-
-        return body?.messages?.flatMap { msg ->
-            listOf(
-                msg.toDomain(isUserMessage = true),
-                msg.toDomain(isUserMessage = false)
-            )
-        } ?: emptyList()
+        val response = authApi.getMessages()
+        val body = response.body()
+        return body?.messages?.flatMap { listOf(
+            it.toDomain(isUserMessage = true),
+            it.toDomain(isUserMessage = false)
+        ) } ?: emptyList()
     }
 
     override suspend fun sendMessage(text: String?, fileUri: String?): ChatMessage {
@@ -36,7 +34,7 @@ class ChatRepositoryImpl(
         var filePart: MultipartBody.Part? = null
         var fileNamePart: RequestBody? = null
 
-        if (!fileUri.isNullOrBlank()) {
+        if (!fileUri.isNullOrEmpty()) {
             val file = uriToFile(context, Uri.parse(fileUri))
                 ?: throw Exception("Cannot read file from URI: $fileUri")
 
@@ -53,52 +51,40 @@ class ChatRepositoryImpl(
             fileNamePart = file.name.toRequestBody("text/plain".toMediaTypeOrNull())
         }
 
-        if (textPart == null && filePart == null) {
-            throw Exception("Cannot send empty message without file")
-        }
-
-        val response = chatApi.sendMessage(textPart, filePart, fileNamePart)
+        val response = authApi.sendMessage(textPart, filePart, fileNamePart)
 
         if (response.isSuccessful) {
-            return ChatMessage(
-                id = 0,
-                text = text,
-                fileName = fileUri,
-                isUser = true
-            )
+            return response.body()?.toDomain(isUserMessage = true)
+                ?: throw Exception("Empty response")
         } else {
             throw Exception("Failed to send message: ${response.code()}")
         }
     }
 
-    private fun createFilePart(uriString: String): MultipartBody.Part {
-        val file = uriToFile(context, Uri.parse(uriString))
-            ?: throw Exception("Cannot read file from URI: $uriString")
 
-        val mimeType = when {
-            file.name.endsWith(".pdf", true) -> "application/pdf"
-            file.name.endsWith(".docx", true) -> "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
-            else -> "application/octet-stream"
-        }
-
-        return MultipartBody.Part.createFormData(
-            "file", file.name, file.asRequestBody(mimeType.toMediaTypeOrNull())
-        )
-    }
-
-    private fun uriToFile(context: Context, uri: Uri): File? {
-        return try {
-            val inputStream = context.contentResolver.openInputStream(uri) ?: return null
-            val tempFile = File.createTempFile("upload", null, context.cacheDir)
-            inputStream.use { input ->
-                tempFile.outputStream().use { output ->
-                    input.copyTo(output)
-                }
+    private fun uriToFile(context: Context, uri: Uri): File {
+        val inputStream = context.contentResolver.openInputStream(uri)
+            ?: throw IllegalArgumentException("Cannot open input stream from URI: $uri")
+        val fileName = getFileNameFromUri(context, uri)
+        val tempFile = File(context.cacheDir, fileName)
+        inputStream.use { input ->
+            tempFile.outputStream().use { output ->
+                input.copyTo(output)
             }
-            tempFile
-        } catch (e: Exception) {
-            e.printStackTrace()
-            null
         }
+        return tempFile
     }
+
+    private fun getFileNameFromUri(context: Context, uri: Uri): String {
+        val cursor = context.contentResolver.query(uri, null, null, null, null)
+        return cursor?.use {
+            val index = it.getColumnIndex(OpenableColumns.DISPLAY_NAME)
+            if (it.moveToFirst() && index != -1) {
+                it.getString(index)
+            } else {
+                uri.lastPathSegment ?: "file"
+            }
+        } ?: uri.lastPathSegment ?: "file"
+    }
+
 }

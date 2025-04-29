@@ -109,6 +109,7 @@ class ChatMessageCreateView(APIView):
 
         # если пришёл файл — сохраним, извлечём текст, удалим
         if file_obj:
+            print(f"Received file: {file_obj.name} size: {file_obj.size}")
             tmp_path = os.path.join('/tmp', file_obj.name)
             with open(tmp_path, 'wb+') as f:
                 for chunk in file_obj.chunks():
@@ -206,7 +207,7 @@ class ScholarSearchView(APIView):
                 {"detail": "Failed to fetch Google Scholar."},
                 status=status.HTTP_502_BAD_GATEWAY
             )
-
+        print(resp.text)
         if resp.status_code != 200:
             return Response(
                 {"detail": "Scholar request failed."},

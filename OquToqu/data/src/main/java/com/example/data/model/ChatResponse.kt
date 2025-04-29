@@ -2,7 +2,6 @@ package com.example.data.model
 
 import com.example.domain.model.ChatMessage
 
-
 data class ChatResponse(
     val id: Int,
     val user: Int,
@@ -13,8 +12,13 @@ data class ChatResponse(
     fun toDomain(isUserMessage: Boolean): ChatMessage {
         return ChatMessage(
             id = id.toLong(),
-            text = if (isUserMessage) user_message else bot_response,
+            text = if (isUserMessage) {
+                if (!file_name.isNullOrEmpty()) file_name else user_message
+            } else {
+                bot_response
+            },
             fileName = file_name,
+            botResponse = if (isUserMessage) null else bot_response,
             isUser = isUserMessage
         )
     }

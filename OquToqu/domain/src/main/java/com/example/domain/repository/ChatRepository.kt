@@ -4,5 +4,5 @@ import com.example.domain.model.ChatMessage
 
 interface ChatRepository {
     suspend fun getMessages(): List<ChatMessage>
-    suspend fun sendMessage(text: String?, fileUri: String?): ChatMessage
+    suspend fun sendMessage(text: String?, fileName: String?): ChatMessage
 }

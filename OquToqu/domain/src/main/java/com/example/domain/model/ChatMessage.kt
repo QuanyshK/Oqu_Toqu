@@ -5,4 +5,5 @@ data class ChatMessage(
     val text: String?,
     val fileName: String?,
     val isUser: Boolean,
+    val botResponse: String?
 )
