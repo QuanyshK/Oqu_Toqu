@@ -25,8 +25,17 @@ GEMINI_MODEL_NAME = os.getenv('GEMINI_MODEL_NAME')
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-cred = credentials.Certificate(BASE_DIR / 'test_backend' / 'oqu-toqu-firebase-firebase-adminsdk-fbsvc-e9d9b0e463.json')
-firebase_admin.initialize_app(cred)
+FIREBASE_CREDS_PATH = os.getenv('FIREBASE_CREDS_PATH')
+
+if FIREBASE_CREDS_PATH:
+    firebase_path = Path(FIREBASE_CREDS_PATH)
+    if firebase_path.exists():
+        cred = credentials.Certificate(str(firebase_path))
+        firebase_admin.initialize_app(cred)
+    else:
+        print(f"⚠ Firebase credentials file not found at: {firebase_path}")
+else:
+    print("⚠ FIREBASE_CREDS_PATH not set in .env — skipping Firebase initialization")
 
 
 # Quick-start development settings - unsuitable for production

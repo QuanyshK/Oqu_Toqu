@@ -1,0 +1,11 @@
+setuptools
+Django
+djangorestframework
+firebase-admin
+psycopg2-binary
+python-dotenv
+PyPDF2
+python-docx
+google-generativeai
+beautifulsoup4
+requests
