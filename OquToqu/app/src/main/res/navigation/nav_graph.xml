@@ -40,5 +40,9 @@
         android:name="com.example.oqutoqu.view.fragment.ChatFragment"
         android:label="fragment_chat"
 />
+    <fragment
+        android:id="@+id/scholarFragment"
+        android:name="com.example.oqutoqu.view.fragment.ScholarFragment"
+        android:label="ScholarFragment" />
 
 </navigation>

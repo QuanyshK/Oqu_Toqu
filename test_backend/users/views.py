@@ -159,6 +159,16 @@ class ChatMessageDeleteView(generics.DestroyAPIView):
 
     def get_queryset(self):
         return ChatMessage.objects.filter(user=self.request.user)
+import time
+import random
+import requests
+from bs4 import BeautifulSoup
+import re
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
+from rest_framework import permissions
+
 class ScholarSearchView(APIView):
     permission_classes = [permissions.AllowAny]
     DOI_PATTERN = re.compile(r"10\.\d{4,9}/[-._;()/:A-Z0-9]+", re.IGNORECASE)
@@ -189,7 +199,7 @@ class ScholarSearchView(APIView):
             "User-Agent": (
                 "Mozilla/5.0 (X11; Linux x86_64) "
                 "AppleWebKit/537.36 (KHTML, like Gecko) "
-                "Chrome/115.0 Safari/537.36"
+                "Chrome/117.0 Safari/537.36"
             )
         }
         params = {
@@ -200,6 +210,9 @@ class ScholarSearchView(APIView):
             "start": start
         }
 
+        # 💤 Добавляем случайную задержку от 1 до 4 секунд
+        time.sleep(random.uniform(1, 4))
+
         try:
             resp = requests.get(url, headers=headers, params=params, timeout=5)
         except requests.RequestException:
@@ -207,7 +220,7 @@ class ScholarSearchView(APIView):
                 {"detail": "Failed to fetch Google Scholar."},
                 status=status.HTTP_502_BAD_GATEWAY
             )
-        print(resp.text)
+
         if resp.status_code != 200:
             return Response(
                 {"detail": "Scholar request failed."},
@@ -219,36 +232,32 @@ class ScholarSearchView(APIView):
 
         results = []
         for item in items:
-            # title & link
             h3 = item.find("h3", class_="gs_rt")
             a = h3.find("a") if h3 else None
             title = a.text if a else (h3.text if h3 else None)
-            link  = a["href"] if a else None
+            link = a["href"] if a else None
 
-            # snippet
             snippet_tag = item.find("div", class_="gs_rs")
             snippet = snippet_tag.get_text(strip=True) if snippet_tag else None
 
-            # authors/year
             authors_tag = item.find("div", class_="gs_a")
             authors = authors_tag.get_text(strip=True) if authors_tag else None
 
-            # doi
             doi = None
             if link:
                 m = self.DOI_PATTERN.search(link)
                 doi = m.group(0) if m else None
 
             results.append({
-                "title":   title,
-                "link":    link,
+                "title": title,
+                "link": link,
                 "snippet": snippet,
                 "authors": authors,
-                "doi":     doi
+                "doi": doi
             })
 
         return Response({
-            "page":      page,
+            "page": page,
             "page_size": page_size,
-            "results":   results
+            "results": results
         }, status=status.HTTP_200_OK)

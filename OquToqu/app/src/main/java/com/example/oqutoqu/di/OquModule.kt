@@ -5,6 +5,7 @@ import com.example.data.manager.AuthManager
 import com.example.data.repository.AuthRepositoryImpl
 import com.example.data.repository.ChatRepositoryImpl
 import com.example.data.repository.ProfileRepositoryImpl
+import com.example.data.repository.ScholarRepositoryImpl
 import com.example.domain.repository.AuthRepository
 import com.example.domain.repository.ProfileRepository
 import com.example.domain.usecase.LogoutUseCase
@@ -14,13 +15,17 @@ import com.example.data.repository.SciHubRepositoryImpl
 import com.example.data.source.local.AppDatabase
 import com.example.data.source.remote.AuthApi
 import com.example.data.source.remote.AuthInterceptor
+import com.example.data.source.remote.ScholarApi
+import com.example.data.source.remote.ScholarRemoteSource
 import com.example.domain.repository.ChatRepository
+import com.example.domain.repository.ScholarRepository
 import com.example.domain.repository.SciHubRepository
 import com.example.domain.usecase.GetChatMessagesUseCase
 import com.example.domain.usecase.GetCurrentUserUseCase
 import com.example.domain.usecase.SendChatMessageUseCase
 import com.example.domain.usecase.SignInWithGoogleUseCase
 import com.example.oqutoqu.viewmodel.ChatViewModel
+import com.example.oqutoqu.viewmodel.ScholarViewModel
 import com.example.oqutoqu.viewmodel.ScienceViewModel
 import com.google.firebase.auth.FirebaseAuth
 import okhttp3.OkHttpClient
@@ -100,4 +105,20 @@ val chatModule = module {
     factoryOf(::SendChatMessageUseCase)
 
     viewModelOf(::ChatViewModel)
+}
+
+val scholarModule = module {
+
+    single<ScholarApi> {
+        Retrofit.Builder()
+            .baseUrl("https://serpapi.com/")
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+            .create(ScholarApi::class.java)
+    }
+
+    single { ScholarRemoteSource(get()) }
+
+    single<ScholarRepository> { ScholarRepositoryImpl(get()) }
+    viewModel { ScholarViewModel(get()) }
 }
