@@ -5,30 +5,37 @@
     android:orientation="vertical"
     android:padding="32dp"
     android:gravity="center_horizontal"
-    android:background="?android:attr/windowBackground">
+    android:background="@drawable/bg_gradient">
 
     <TextView
         android:id="@+id/tvEmail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="your.email@example.com"
-        android:textSize="18sp"
+        android:textSize="20sp"
         android:textStyle="bold"
-        android:layout_marginBottom="40dp" />
+        android:textColor="@android:color/white"
+        android:layout_marginBottom="48dp" />
 
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/btnSupport"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Support in WhatsApp"
-        android:padding="12dp"
+        android:textColor="@android:color/white"
+        android:backgroundTint="#5E60CE"
+        android:padding="14dp"
         android:layout_marginBottom="16dp" />
 
-    <Button
+
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/btnLogout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Log out"
         android:textColor="@android:color/white"
-        android:padding="12dp" />
+        android:padding="14dp"
+        android:backgroundTint="#E63946"/>
+
+
 </LinearLayout>

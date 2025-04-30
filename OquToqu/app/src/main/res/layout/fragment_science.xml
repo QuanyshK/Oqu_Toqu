@@ -1,30 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:padding="16dp"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="?android:attr/windowBackground">
+    android:orientation="vertical"
+    android:padding="24dp"
+    android:background="@drawable/bg_gradient">
 
     <EditText
         android:id="@+id/etDoi"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="DOI-link" />
+        android:hint="Enter DOI link"
+        android:padding="12dp"
+        android:background="@drawable/bg_input"
+        android:textColor="@android:color/black"
+        android:textColorHint="@android:color/darker_gray"
+        android:elevation="4dp"
+        android:layout_marginBottom="16dp"/>
 
     <Button
         android:id="@+id/btnSearch"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Find Article" />
+        android:text="Find Article"
+        android:backgroundTint="#5E60CE"
+        android:textColor="@android:color/white"
+        android:layout_marginBottom="16dp" />
 
     <TextView
         android:id="@+id/tvResult"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text=""
-        android:paddingTop="12dp" />
+        android:textColor="@android:color/black"
+        android:textSize="16sp"
+        android:padding="12dp"
+        android:background="@drawable/bg_result"
+        android:layout_marginBottom="16dp"/>
 
     <Button
         android:id="@+id/btnOpenPdf"
@@ -32,6 +45,6 @@
         android:layout_height="wrap_content"
         android:visibility="gone"
         android:text="Open PDF"
-
-        android:paddingTop="12dp" />
+        android:backgroundTint="#5E60CE"
+        android:textColor="@android:color/white" />
 </LinearLayout>
