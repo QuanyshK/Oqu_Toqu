@@ -8,7 +8,7 @@ class GeminiService:
 
     def summarize(self, text: str) -> str:
         prompt = (
-            "Provide a detailed summary (minimum 400–500 words) "
+            "Provide a detailed summary (minimum 100 words) "
             "of the following text or article:\n\n" + text
         )
         try:

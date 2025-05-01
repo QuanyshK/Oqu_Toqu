@@ -25,17 +25,10 @@ GEMINI_MODEL_NAME = os.getenv('GEMINI_MODEL_NAME')
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-FIREBASE_CREDS_PATH = os.getenv('FIREBASE_CREDS_PATH')
 
-if FIREBASE_CREDS_PATH:
-    firebase_path = Path(FIREBASE_CREDS_PATH)
-    if firebase_path.exists():
-        cred = credentials.Certificate(str(firebase_path))
-        firebase_admin.initialize_app(cred)
-    else:
-        print(f"⚠ Firebase credentials file not found at: {firebase_path}")
-else:
-    print("⚠ FIREBASE_CREDS_PATH not set in .env — skipping Firebase initialization")
+cred = credentials.Certificate(BASE_DIR / 'test_backend' / 'oqu-toqu-firebase-firebase-adminsdk-fbsvc-e9d9b0e463.json')
+
+firebase_admin.initialize_app(cred)
 
 
 # Quick-start development settings - unsuitable for production
@@ -105,23 +98,23 @@ WSGI_APPLICATION = 'test_backend.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
-#     }
-# }
-
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.getenv('DB_NAME'),
-        'USER': os.getenv('DB_USER'),
-        'PASSWORD': os.getenv('DB_PASSWORD'),
-        'HOST': os.getenv('DB_HOST'),
-        'PORT': os.getenv('DB_PORT', '5432'),
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': os.getenv('DB_NAME'),
+#         'USER': os.getenv('DB_USER'),
+#         'PASSWORD': os.getenv('DB_PASSWORD'),
+#         'HOST': os.getenv('DB_HOST'),
+#         'PORT': os.getenv('DB_PORT', '5432'),
+#     }
+# }
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators

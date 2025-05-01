@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.Fragment
-import com.example.oqutoqu.view.fragment.ChatScreen
+import com.example.oqutoqu.view.screen.ChatScreen
 
 class ChatFragment : Fragment() {
 

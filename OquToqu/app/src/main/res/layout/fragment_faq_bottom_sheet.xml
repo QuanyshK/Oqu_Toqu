@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="24dp"
+    android:background="@android:color/white">
+
+    <TextView
+        android:id="@+id/tvFaqTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="What is Oqu Toqu?"
+        android:textStyle="bold"
+        android:textSize="18sp"
+        android:textColor="@color/black"
+        android:layout_marginBottom="12dp" />
+
+    <TextView
+        android:id="@+id/tvFaqDescription"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Oqu Toqu is an app that gives researchers worldwide access to articles using Google Scholar and Sci-Hub. It also features an AI-powered summarizer that helps you understand key points in any scientific paper."
+        android:textSize="15sp"
+        android:textColor="@color/black" />
+
+    <TextView
+        android:id="@+id/tvDisclaimer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Disclaimer: Sci-Hub is used strictly for educational and research purposes only"
+        android:textSize="13sp"
+        android:textColor="@color/gray"
+        android:layout_marginTop="12dp"
+        android:layout_marginBottom="24dp" />
+
+</LinearLayout>

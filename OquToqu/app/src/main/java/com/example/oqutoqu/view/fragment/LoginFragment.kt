@@ -30,7 +30,6 @@ class LoginFragment : Fragment() {
             acct?.idToken?.let { token ->
                 authViewModel.loginWithGoogle(token) { success ->
                     if (success) {
-                        Toast.makeText(requireContext(), "Login OK", Toast.LENGTH_SHORT).show()
                         findNavController().navigate(R.id.action_loginFragment_to_profileFragment)
                     } else {
                         Toast.makeText(requireContext(), "Auth failed", Toast.LENGTH_SHORT).show()

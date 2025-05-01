@@ -14,6 +14,7 @@ interface ChatDao {
     @Insert
     suspend fun insert(entity: ChatEntity): Long
 
+
     @Update
     suspend fun update(entity: ChatEntity)
 }

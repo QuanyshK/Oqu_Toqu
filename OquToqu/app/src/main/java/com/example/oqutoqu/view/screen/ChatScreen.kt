@@ -1,6 +1,7 @@
-package com.example.oqutoqu.view.fragment
+package com.example.oqutoqu.view.screen
 
-import android.net.Uri
+import android.content.IntentFilter
+import android.net.ConnectivityManager
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
@@ -8,27 +9,57 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AttachFile
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.example.domain.model.ChatMessage
 import com.example.oqutoqu.viewmodel.ChatViewModel
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
+import com.example.oqutoqu.R
+import com.example.oqutoqu.receiver.NetworkReceiver
 
 @Composable
 fun ChatScreen(viewModel: ChatViewModel = koinViewModel()) {
     val context = LocalContext.current
+    var isConnected by remember { mutableStateOf(true) }
+    DisposableEffect(Unit) {
+        val receiver = NetworkReceiver { isConnected ->
+            viewModel.onConnectionChanged(isConnected)
+        }
+        val filter = IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION)
+        context.registerReceiver(receiver, filter)
+
+        onDispose {
+            context.unregisterReceiver(receiver)
+        }
+    }
+
+    DisposableEffect(Unit) {
+        val receiver = NetworkReceiver { connected ->
+            isConnected = connected
+        }
+
+        val filter = IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION)
+        context.registerReceiver(receiver, filter)
+
+        onDispose {
+            context.unregisterReceiver(receiver)
+        }
+    }
+
     val messages by viewModel.messages.collectAsState()
     var inputText by remember { mutableStateOf("") }
     val listState = rememberLazyListState()
@@ -38,7 +69,7 @@ fun ChatScreen(viewModel: ChatViewModel = koinViewModel()) {
         uri?.let { viewModel.setSelectedFile(it) }
     }
 
-    Column(Modifier.fillMaxSize().background(Color(0xFFF2F2F2))) {
+    Column(Modifier.fillMaxSize().background(colorResource(id = R.color.background))) {
 
         LazyColumn(
             state = listState,
@@ -59,22 +90,22 @@ fun ChatScreen(viewModel: ChatViewModel = koinViewModel()) {
             }
         }
 
-        Spacer(Modifier.height(4.dp))
+        Divider()
 
         Surface(
-            elevation = 8.dp,
-            modifier = Modifier.fillMaxWidth()
+            elevation = 10.dp,
+            modifier = Modifier.fillMaxWidth(),
+            color = Color.White
         ) {
             Row(
-                modifier = Modifier
-                    .padding(8.dp),
+                modifier = Modifier.padding(8.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 if (viewModel.selectedFileName != null) {
                     Row(
                         modifier = Modifier
                             .weight(1f)
-                            .background(Color(0xFFE0E0E0), shape = MaterialTheme.shapes.small)
+                            .background(Color(0xFFDEE8FF), shape = MaterialTheme.shapes.small)
                             .padding(horizontal = 12.dp, vertical = 8.dp),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
@@ -94,9 +125,17 @@ fun ChatScreen(viewModel: ChatViewModel = koinViewModel()) {
                         value = inputText,
                         onValueChange = { inputText = it },
                         placeholder = { Text("Type your message...") },
-                        modifier = Modifier.weight(1f),
+                        modifier = Modifier
+                            .weight(1f)
+                            .background(
+                                color = Color.White,
+                                shape = RoundedCornerShape(12.dp)
+                            )
+                            .padding(horizontal = 8.dp),
                         colors = TextFieldDefaults.textFieldColors(
-                            backgroundColor = Color.White
+                            backgroundColor = Color.Transparent,
+                            focusedIndicatorColor = Color.Transparent,
+                            unfocusedIndicatorColor = Color.Transparent
                         )
                     )
                 }
@@ -114,19 +153,28 @@ fun ChatScreen(viewModel: ChatViewModel = koinViewModel()) {
                     onClick = {
                         viewModel.onSend(inputText)
                         inputText = ""
+                        viewModel.clearSelectedFile()
                     },
+                    colors = ButtonDefaults.buttonColors(backgroundColor = colorResource(id = R.color.primary_blue)),
                     modifier = Modifier.padding(start = 4.dp)
                 ) {
-                    Text("Send")
+                    Text("Send", color = Color.White)
                 }
             }
         }
     }
 }
 
+
 @Composable
 fun MessageBubble(message: ChatMessage) {
-    val backgroundColor = if (message.isUser) Color(0xFFDCF8C6) else Color.White
+    val showText = !message.text.isNullOrBlank()
+    val showBotResponse = !message.botResponse.isNullOrBlank()
+
+    if (!showText && !showBotResponse) return
+
+    val backgroundColor = if (message.isUser) colorResource(id = R.color.primary_blue) else Color.White
+    val textColor = if (message.isUser) Color.White else Color.Black
     val alignment = if (message.isUser) Arrangement.End else Arrangement.Start
 
     Row(
@@ -136,32 +184,39 @@ fun MessageBubble(message: ChatMessage) {
         Surface(
             shape = MaterialTheme.shapes.medium,
             color = backgroundColor,
-            elevation = 2.dp,
+            elevation = 4.dp,
             modifier = Modifier
                 .padding(vertical = 4.dp)
-                .widthIn(max = 300.dp)
+                .widthIn(max = 320.dp)
         ) {
-            Column(
-                modifier = Modifier
-                    .padding(12.dp)
-            ) {
-                Text(
-                    text = message.text ?: "",
-                    color = Color.Black,
-                    style = MaterialTheme.typography.bodyLarge
-                )
+            Column(modifier = Modifier.padding(12.dp)) {
+                SelectionContainer {
+                    val content = if (showText) message.text else message.botResponse
+                    Text(
+                        text = formatMessageText(content ?: ""),
+                        color = textColor,
+                        style = MaterialTheme.typography.bodyLarge
+                    )
+                }
 
                 message.fileName?.let {
-                    if (message.text.isNullOrEmpty()) {
-                        Spacer(modifier = Modifier.height(4.dp))
-                        Text(
-                            text = "📎 $it",
-                            color = Color.Gray,
-                            style = MaterialTheme.typography.bodySmall
-                        )
-                    }
+                    Spacer(modifier = Modifier.height(4.dp))
+                    Text(
+                        text = "\uD83D\uDCCE $it",
+                        color = textColor.copy(alpha = 0.8f),
+                        style = MaterialTheme.typography.bodySmall
+                    )
                 }
             }
         }
     }
 }
+
+private fun formatMessageText(raw: String): String {
+    return raw
+        .replace("*", "")
+        .replace(Regex("\\*\\s+"), "\u2022 ")
+        .replace("\n", "\n\n")
+}
+
+

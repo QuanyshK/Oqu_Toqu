@@ -11,24 +11,28 @@ data class ChatEntity(
     val text: String?,
     val fileName: String?,
     val botResponse: String?,
-    val isUser: Boolean
+    val isUser: Boolean,
+    val userToken: String?,
+
 ) {
     fun toDomain(): ChatMessage = ChatMessage(
         id = id,
         text = text,
         fileName = fileName,
-        botResponse = botResponse, // 🆕 передаём в ChatMessage
-        isUser = isUser
+        botResponse = botResponse,
+        isUser = isUser,
+        userToken = userToken
     )
 
     companion object {
         fun fromDomain(message: ChatMessage): ChatEntity {
             return ChatEntity(
-                id = message.id,
+                id = 0,
                 text = message.text,
                 fileName = message.fileName,
                 botResponse = message.botResponse,
-                isUser = message.isUser
+                isUser = message.isUser,
+                userToken = message.userToken ?: ""
             )
         }
     }

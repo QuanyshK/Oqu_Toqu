@@ -7,6 +7,5 @@ urlpatterns = [
     path('chat/',         ChatMessageListView.as_view(),   name='chat-list'),
     path('chat/<int:pk>/',       ChatMessageDetailView.as_view(), name='chat-detail'),
     path('chat/<int:pk>/delete/', ChatMessageDeleteView.as_view(), name='chat-delete'),
-    path("scholar/search/", ScholarSearchView.as_view(), name="scholar-search"),
 
 ]

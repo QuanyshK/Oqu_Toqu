@@ -7,9 +7,9 @@ data class ChatResponse(
     val user: Int,
     val user_message: String?,
     val bot_response: String?,
-    val file_name: String?,
+    val file_name: String?
 ) {
-    fun toDomain(isUserMessage: Boolean): ChatMessage {
+    fun toDomain(isUserMessage: Boolean, userToken: String): ChatMessage {
         return ChatMessage(
             id = id.toLong(),
             text = if (isUserMessage) {
@@ -19,7 +19,8 @@ data class ChatResponse(
             },
             fileName = file_name,
             botResponse = if (isUserMessage) null else bot_response,
-            isUser = isUserMessage
+            isUser = isUserMessage,
+            userToken = userToken,
         )
     }
 }

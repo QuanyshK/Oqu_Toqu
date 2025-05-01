@@ -11,12 +11,14 @@ import com.example.oqutoqu.databinding.FragmentProfileBinding
 import com.example.oqutoqu.viewmodel.AuthViewModel
 import com.example.oqutoqu.viewmodel.ProfileViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import androidx.navigation.NavOptions
+import com.example.data.manager.AuthManager
 
 class ProfileFragment : Fragment() {
     private var _binding: FragmentProfileBinding? = null
     private val binding get() = _binding!!
     private val profileViewModel: ProfileViewModel by viewModel()
-
+    private lateinit var authManager: AuthManager
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ) = FragmentProfileBinding.inflate(inflater, container, false).also { _binding = it }.root
@@ -26,7 +28,7 @@ class ProfileFragment : Fragment() {
         profileViewModel.email.observe(viewLifecycleOwner) { email ->
             binding.tvEmail.text = email ?: "No email"
         }
-
+        authManager = AuthManager(requireContext())
         binding.btnSupport.setOnClickListener {
             val number = getString(R.string.support_number)
             val url = "https://wa.me/$number"
@@ -38,7 +40,14 @@ class ProfileFragment : Fragment() {
 
         binding.btnLogout.setOnClickListener {
             profileViewModel.logout()
-            findNavController().navigate(R.id.action_profileFragment_to_loginFragment)
+            authManager.clearToken()
+            findNavController().navigate(R.id.action_profileFragment_to_loginFragment,     null,
+                NavOptions.Builder()
+                    .setPopUpTo(R.id.nav_graph, true)
+                    .build())
+        }
+        binding.btnFaq.setOnClickListener {
+            findNavController().navigate(R.id.action_profileFragment_to_faqBottomSheetFragment2)
         }
     }
 

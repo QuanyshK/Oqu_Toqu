@@ -3,6 +3,7 @@ package com.example.data.repository
 import android.content.Context
 import android.net.Uri
 import android.provider.OpenableColumns
+import com.example.data.manager.AuthManager
 import com.example.data.source.remote.AuthApi
 import com.example.domain.model.ChatMessage
 import com.example.domain.repository.ChatRepository
@@ -17,14 +18,18 @@ class ChatRepositoryImpl(
     private val context: Context,
     private val authApi: AuthApi
 ) : ChatRepository {
-
+    private val authManager = AuthManager(context)
     override suspend fun getMessages(): List<ChatMessage> {
         val response = authApi.getMessages()
         val body = response.body()
-        return body?.messages?.flatMap { listOf(
-            it.toDomain(isUserMessage = true),
-            it.toDomain(isUserMessage = false)
-        ) } ?: emptyList()
+        val userToken = authManager.getToken() ?: ""
+
+        return body?.messages?.flatMap {
+            listOf(
+                it.toDomain(isUserMessage = true, userToken),
+                it.toDomain(isUserMessage = false, userToken)
+            )
+        } ?: emptyList()
     }
 
     override suspend fun sendMessage(text: String?, fileUri: String?): ChatMessage {
@@ -54,11 +59,13 @@ class ChatRepositoryImpl(
         val response = authApi.sendMessage(textPart, filePart, fileNamePart)
 
         if (response.isSuccessful) {
-            return response.body()?.toDomain(isUserMessage = true)
+            val userToken = authManager.getToken() ?: ""
+            return response.body()?.toDomain(isUserMessage = true, userToken)
                 ?: throw Exception("Empty response")
         } else {
             throw Exception("Failed to send message: ${response.code()}")
         }
+
     }
 
 
