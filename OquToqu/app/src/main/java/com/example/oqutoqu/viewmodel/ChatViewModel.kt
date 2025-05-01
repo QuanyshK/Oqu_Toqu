@@ -49,17 +49,16 @@ class ChatViewModel(
             } catch (e: Exception) {
                 println("🛑 Network Error: ${e.message}")
 
+                val currentToken = authManager.getToken()
                 val localMessages = try {
-                    chatDao.getAllEntities().firstOrNull()?.toList()?.map { it.toDomain() }.orEmpty().also {
-                        println("📥 Room FETCH: ${it.size} messages")
-                    }
+                    chatDao.getAllEntities().firstOrNull()?.map { it.toDomain() }?.filter {
+                        it.userToken == currentToken
+                    }?.also {
+                        println("📥 Room FETCH (user only): ${it.size} messages")
+                    } ?: emptyList()
                 } catch (roomError: Exception) {
                     println("❌ Room fetch ERROR: ${roomError.message}")
                     emptyList()
-                }
-
-                val filtered = localMessages.filterNot {
-                    it.botResponse?.contains("offline", ignoreCase = true) == true
                 }
 
                 val notice = ChatMessage(
@@ -67,13 +66,14 @@ class ChatViewModel(
                     isUser = false,
                     botResponse = "🔌 Please reconnect to internet, loaded offline mode",
                     fileName = null,
-                    userToken = null
+                    userToken = currentToken
                 )
 
-                _messages.value = filtered + notice
+                _messages.value = localMessages + notice
             }
         }
     }
+
 
 
     fun onSend(text: String) {

@@ -3,7 +3,7 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#EAF2FF"
+    android:background="@color/background"
     android:gravity="top"
     android:paddingTop="48dp">
 
@@ -13,7 +13,7 @@
         android:layout_height="160dp"
         android:layout_marginBottom="10dp"
         android:layout_gravity="center"
-        android:src="@drawable/ic_launcher_foreground"
+        android:src="@mipmap/logo_round"
         android:contentDescription="Oqu Toqu Logo" />
 
     <LinearLayout

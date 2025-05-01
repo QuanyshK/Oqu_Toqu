@@ -24,11 +24,24 @@ class ProfileFragment : Fragment() {
     ) = FragmentProfileBinding.inflate(inflater, container, false).also { _binding = it }.root
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        authManager = AuthManager(requireContext())
+        val isLoggedIn = !authManager.getToken().isNullOrBlank()
+
+        if (!isLoggedIn) {
+            findNavController().navigate(
+                R.id.action_profileFragment_to_loginFragment,
+                null,
+                NavOptions.Builder()
+                    .setPopUpTo(R.id.nav_graph, true) 
+                    .build()
+            )
+            return
+        }
         profileViewModel.loadUser()
         profileViewModel.email.observe(viewLifecycleOwner) { email ->
             binding.tvEmail.text = email ?: "No email"
         }
-        authManager = AuthManager(requireContext())
+
         binding.btnSupport.setOnClickListener {
             val number = getString(R.string.support_number)
             val url = "https://wa.me/$number"

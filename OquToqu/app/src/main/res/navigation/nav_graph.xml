@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/startFragment">
+    app:startDestination="@id/profileFragment">
 
     <fragment
         android:id="@+id/profileFragment"
@@ -47,22 +47,6 @@
         android:id="@+id/scholarFragment"
         android:name="com.example.oqutoqu.view.fragment.ScholarFragment"
         android:label="ScholarFragment" />
-    <fragment
-        android:id="@+id/startFragment"
-        android:name="com.example.oqutoqu.view.fragment.StartFragment"
-        android:label="Start"
-        tools:layout="@layout/fragment_start" >
-        <action
-            android:id="@+id/action_startFragment_to_profileFragment"
-            app:destination="@id/profileFragment"
-            app:popUpTo="@id/startFragment"
-            app:popUpToInclusive="true" />
-        <action
-            android:id="@+id/action_startFragment_to_loginFragment"
-            app:destination="@id/loginFragment"
-            app:popUpTo="@id/startFragment"
-            app:popUpToInclusive="true" />
-    </fragment>
     <dialog
         android:id="@+id/faqBottomSheetFragment"
         android:name="com.example.oqutoqu.view.fragment.FaqBottomSheetFragment"
