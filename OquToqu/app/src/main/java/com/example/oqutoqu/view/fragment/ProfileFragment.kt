@@ -32,7 +32,7 @@ class ProfileFragment : Fragment() {
                 R.id.action_profileFragment_to_loginFragment,
                 null,
                 NavOptions.Builder()
-                    .setPopUpTo(R.id.nav_graph, true) 
+                    .setPopUpTo(R.id.nav_graph, true)
                     .build()
             )
             return

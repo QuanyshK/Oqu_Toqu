@@ -172,15 +172,7 @@ fun ScholarScreen(viewModel: ScholarViewModel = koinViewModel()) {
                             shape = RoundedCornerShape(12.dp),
                             colors = ButtonDefaults.buttonColors(containerColor = colorResource(id = R.color.primary_blue))
                         ) {
-                            if (isLoading) {
-                                CircularProgressIndicator(
-                                    modifier = Modifier.size(20.dp),
-                                    strokeWidth = 2.dp,
-                                    color = Color.White
-                                )
-                            } else {
-                                Text("Load More", color = Color.White)
-                            }
+                            Text("Load More", color = Color.White)
                         }
 
                         Spacer(modifier = Modifier.height(12.dp))
