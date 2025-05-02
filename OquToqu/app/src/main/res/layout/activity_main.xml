@@ -25,7 +25,7 @@
         app:menu="@menu/bottom_nav_menu"
         app:itemIconTint="@null"
         app:itemTextColor="@color/bottom_nav_text_color"
-        app:itemBackground="@android:color/transparent"
-/>
+        android:state_checked="true"
+        app:itemBackground="@android:color/transparent"/>
 
 </LinearLayout>

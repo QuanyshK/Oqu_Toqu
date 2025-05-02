@@ -65,9 +65,18 @@
                     android:visibility="gone"
                     android:text="Open PDF"
                     android:backgroundTint="@color/primary_blue"
-                    android:background="@color/background"
                     android:textColor="@color/white"
                     />
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnDownloadPdf"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+
+                    android:text="Download PDF"
+                    android:backgroundTint="@color/primary_blue"
+                    android:textColor="@color/white"
+                    app:cornerRadius="16dp" />
             </LinearLayout>
         </androidx.cardview.widget.CardView>
     </LinearLayout>

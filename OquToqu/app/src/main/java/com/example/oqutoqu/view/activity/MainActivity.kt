@@ -29,7 +29,6 @@ class MainActivity : AppCompatActivity() {
         binding.bottomNavigation.setupWithNavController(controller)
 
         controller.addOnDestinationChangedListener { _, destination, _ ->
-            println("🧭 Current destination: ${destination.label}")
             binding.bottomNavigation.visibility =
                 if (destination.id == R.id.loginFragment) View.GONE else View.VISIBLE
         }
