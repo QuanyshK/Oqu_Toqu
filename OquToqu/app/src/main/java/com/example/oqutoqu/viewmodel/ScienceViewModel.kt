@@ -13,9 +13,19 @@ class ScienceViewModel(private val repository: SciHubRepository) : ViewModel() {
     private val _sciHubResult = MutableLiveData<SciHubResult?>()
     val sciHubResult: LiveData<SciHubResult?> = _sciHubResult
 
+    var lastDoi: String? = null
+        private set
+    var lastPdfUrl: String? = null
+        private set
+
     fun fetchPdf(doi: String) {
+        if (doi == lastDoi && !lastPdfUrl.isNullOrBlank()) return
         viewModelScope.launch {
             val result = repository.fetchPdf(doi)
+            if (result?.pdfLink != null) {
+                lastDoi = doi
+                lastPdfUrl = "https:${result.pdfLink}"
+            }
             _sciHubResult.value = result
         }
     }

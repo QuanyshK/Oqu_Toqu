@@ -37,7 +37,13 @@
         android:id="@+id/scienceFragment"
         android:name="com.example.oqutoqu.view.fragment.ScienceFragment"
         android:label="ScienceFragment"
-        tools:layout="@layout/fragment_science"/>
+        tools:layout="@layout/fragment_science">
+
+        <argument
+            android:name="doi"
+            app:argType="string"
+            android:defaultValue=""/>
+    </fragment>
     <fragment
         android:id="@+id/chatFragment"
         android:name="com.example.oqutoqu.view.fragment.ChatFragment"

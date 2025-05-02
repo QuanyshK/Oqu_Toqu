@@ -47,24 +47,24 @@ class ChatViewModel(
             try {
                 _messages.value = getMessages()
             } catch (e: Exception) {
-                println("🛑 Network Error: ${e.message}")
+                println("Network Error: ${e.message}")
 
                 val currentToken = authManager.getToken()
                 val localMessages = try {
                     chatDao.getAllEntities().firstOrNull()?.map { it.toDomain() }?.filter {
                         it.userToken == currentToken
                     }?.also {
-                        println("📥 Room FETCH (user only): ${it.size} messages")
+                        println("Room FETCH (user only): ${it.size} messages")
                     } ?: emptyList()
                 } catch (roomError: Exception) {
-                    println("❌ Room fetch ERROR: ${roomError.message}")
+                    println("Room fetch ERROR: ${roomError.message}")
                     emptyList()
                 }
 
                 val notice = ChatMessage(
                     text = null,
                     isUser = false,
-                    botResponse = "🔌 Please reconnect to internet, loaded offline mode",
+                    botResponse = "Please reconnect to internet, loaded offline mode",
                     fileName = null,
                     userToken = currentToken
                 )
@@ -96,13 +96,13 @@ class ChatViewModel(
         _messages.value += userMessage
 
         if (!isConnected) {
-            println("🔌 OFFLINE MODE: saving to Room")
+            println("OFFLINE MODE: saving to Room")
             saveMessageOffline(userMessage)
 
             val notice = ChatMessage(
                 text = null,
                 isUser = false,
-                botResponse = "🔌 Please reconnect to internet, loaded offline mode",
+                botResponse = "Please reconnect to internet, loaded offline mode",
                 fileName = null,
                 userToken = null
             )
@@ -126,7 +126,7 @@ class ChatViewModel(
                 val notice = ChatMessage(
                     text = null,
                     isUser = false,
-                    botResponse = "🔌 Please reconnect to internet, loaded offline mode",
+                    botResponse = "Please reconnect to internet, loaded offline mode",
                     fileName = null,
                     userToken = null
                 )
@@ -139,7 +139,7 @@ class ChatViewModel(
 
     fun onConnectionChanged(isConnected: Boolean) {
         if (!isConnected && lastConnectionStatus) {
-            println("🔔 Connection lost")
+            println("Connection lost")
 
             val alreadyHasNotice = _messages.value.any {
                 it.botResponse?.contains("offline", ignoreCase = true) == true &&
@@ -151,7 +151,7 @@ class ChatViewModel(
                 val notice = ChatMessage(
                     text = null,
                     isUser = false,
-                    botResponse = "🔌 Please reconnect to internet, loaded offline mode",
+                    botResponse = "Please reconnect to internet, loaded offline mode",
                     fileName = null,
                     userToken = null
                 )
@@ -159,7 +159,7 @@ class ChatViewModel(
                 saveMessageOffline(notice)
             }
         } else if (isConnected && !lastConnectionStatus) {
-            println("🔔 Connection restored")
+            println("🔔onnection restored")
 
             _messages.value = _messages.value.filterNot {
                 it.botResponse?.contains("offline", ignoreCase = true) == true ||
@@ -171,7 +171,7 @@ class ChatViewModel(
                     val restored = getMessages()
                     _messages.value = restored
                 } catch (e: Exception) {
-                    println("❌ Failed to refresh after reconnect: ${e.message}")
+                    println("Failed to refresh after reconnect: ${e.message}")
                 }
             }
         }
@@ -184,9 +184,9 @@ class ChatViewModel(
         viewModelScope.launch {
             try {
                 val id = chatDao.insert(ChatEntity.fromDomain(message))
-                println("💾 Room INSERT: $id | ${message.text ?: message.botResponse}")
+                println("Room INSERT: $id | ${message.text ?: message.botResponse}")
             } catch (e: Exception) {
-                println("❌ Room insert ERROR: ${e.message}")
+                println("Room insert ERROR: ${e.message}")
             }
         }
     }
@@ -210,12 +210,4 @@ class ChatViewModel(
             else uri.lastPathSegment ?: "file"
         } ?: uri.lastPathSegment ?: "file"
     }
-
-    private fun offlineSystemMessage(botText: String) = ChatMessage(
-        text = null,
-        isUser = false,
-        botResponse = botText,
-        fileName = null,
-        userToken = null,
-    )
 }

@@ -1,5 +1,9 @@
 package com.example.oqutoqu.view.screen
 
+import android.app.Activity
+import android.content.Intent
+import android.net.Uri
+import android.os.Bundle
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -13,29 +17,38 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalClipboardManager
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalUriHandler
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.TextUnit
-import androidx.compose.ui.graphics.Shape
-import androidx.compose.ui.unit.DpSize
-import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.navigation.NavController
+import androidx.navigation.Navigation.findNavController
+import com.example.oqutoqu.R
 import com.example.oqutoqu.viewmodel.ScholarViewModel
 import org.koin.androidx.compose.koinViewModel
-import com.example.oqutoqu.R
-import androidx.compose.ui.res.colorResource
+
 @Composable
-fun ScholarScreen(viewModel: ScholarViewModel = koinViewModel()) {
+fun ScholarScreen(
+    viewModel: ScholarViewModel = koinViewModel(),
+    navController: NavController,
+    initialQuery: String? = null
+) {
     val items by viewModel.items.collectAsState()
     val isLoading by viewModel.isLoading.collectAsState()
 
-    var query by remember { mutableStateOf("") }
+    var query by remember { mutableStateOf(initialQuery ?: "") }
     var hasSearched by remember { mutableStateOf(false) }
+
+    LaunchedEffect(initialQuery) {
+        initialQuery?.let {
+            viewModel.search(it.trim(), page = 0)
+            hasSearched = true
+        }
+    }
 
     Column(
         modifier = Modifier
@@ -63,7 +76,7 @@ fun ScholarScreen(viewModel: ScholarViewModel = koinViewModel()) {
                         .height(56.dp)
                         .background(
                             color = Color.White,
-                            shape = RoundedCornerShape(12.dp)
+                            shape = MaterialTheme.shapes.medium
                         ),
                     colors = OutlinedTextFieldDefaults.colors(
                         unfocusedBorderColor = Color.LightGray,
@@ -87,7 +100,7 @@ fun ScholarScreen(viewModel: ScholarViewModel = koinViewModel()) {
                     modifier = Modifier
                         .height(56.dp)
                         .padding(start = 8.dp),
-                    shape = RoundedCornerShape(12.dp)
+                    shape = MaterialTheme.shapes.medium
                 ) {
                     Text("Search", color = Color.White)
                 }
@@ -110,12 +123,13 @@ fun ScholarScreen(viewModel: ScholarViewModel = koinViewModel()) {
                             .fillMaxWidth()
                             .padding(vertical = 6.dp),
                         elevation = CardDefaults.cardElevation(4.dp),
-                        shape = RoundedCornerShape(12.dp),
+                        shape = MaterialTheme.shapes.medium,
                         colors = CardDefaults.cardColors(containerColor = Color.White)
                     ) {
                         Column(modifier = Modifier.padding(16.dp)) {
                             val clipboardManager = LocalClipboardManager.current
                             val uriHandler = LocalUriHandler.current
+                            val context = LocalContext.current
 
                             Text(
                                 text = item.title ?: "Without Title",
@@ -135,13 +149,17 @@ fun ScholarScreen(viewModel: ScholarViewModel = koinViewModel()) {
                                 Text(
                                     text = "DOI: $doi",
                                     style = MaterialTheme.typography.labelSmall.copy(
-                                        color = Color.Black,
-                                        fontSize = 12.sp
+                                        color = MaterialTheme.colorScheme.primary,
+                                        fontSize = 12.sp,
+                                        fontWeight = FontWeight.Medium
                                     ),
                                     maxLines = 1,
                                     overflow = TextOverflow.Ellipsis,
                                     modifier = Modifier.clickable {
-                                        clipboardManager.setText(AnnotatedString(doi))
+                                        val bundle = Bundle().apply {
+                                            putString("doi", doi)
+                                        }
+                                        navController.navigate(R.id.scienceFragment, bundle)
                                     }
                                 )
                             }
@@ -161,7 +179,7 @@ fun ScholarScreen(viewModel: ScholarViewModel = koinViewModel()) {
                     }
                 }
 
-                if (hasSearched && items.isNotEmpty()) {
+                if (items.isNotEmpty()) {
                     item {
                         Spacer(modifier = Modifier.height(12.dp))
 
@@ -169,7 +187,7 @@ fun ScholarScreen(viewModel: ScholarViewModel = koinViewModel()) {
                             onClick = { viewModel.loadNextPage() },
                             modifier = Modifier.fillMaxWidth(),
                             enabled = !isLoading,
-                            shape = RoundedCornerShape(12.dp),
+                            shape = MaterialTheme.shapes.medium,
                             colors = ButtonDefaults.buttonColors(containerColor = colorResource(id = R.color.primary_blue))
                         ) {
                             Text("Load More", color = Color.White)
@@ -180,6 +198,5 @@ fun ScholarScreen(viewModel: ScholarViewModel = koinViewModel()) {
                 }
             }
         }
-
     }
 }

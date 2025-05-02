@@ -24,6 +24,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.example.domain.model.ChatMessage
 import com.example.oqutoqu.viewmodel.ChatViewModel
 import kotlinx.coroutines.launch
@@ -176,36 +177,50 @@ fun MessageBubble(message: ChatMessage) {
     val backgroundColor = if (message.isUser) colorResource(id = R.color.primary_blue) else Color.White
     val textColor = if (message.isUser) Color.White else Color.Black
     val alignment = if (message.isUser) Arrangement.End else Arrangement.Start
+    val attachmentColor = if (message.isUser) Color.White.copy(alpha = 0.2f) else Color(0xFFEAF1FF)
 
     Row(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = alignment
     ) {
         Surface(
-            shape = MaterialTheme.shapes.medium,
+            shape = RoundedCornerShape(16.dp),
             color = backgroundColor,
             elevation = 4.dp,
             modifier = Modifier
-                .padding(vertical = 4.dp)
+                .padding(vertical = 6.dp, horizontal = 4.dp)
                 .widthIn(max = 320.dp)
         ) {
-            Column(modifier = Modifier.padding(12.dp)) {
+            Column(modifier = Modifier.padding(14.dp)) {
                 SelectionContainer {
                     val content = if (showText) message.text else message.botResponse
                     Text(
                         text = formatMessageText(content ?: ""),
                         color = textColor,
-                        style = MaterialTheme.typography.bodyLarge
+                        style = MaterialTheme.typography.bodyLarge,
+                        lineHeight = 22.sp
                     )
                 }
 
-                message.fileName?.let {
-                    Spacer(modifier = Modifier.height(4.dp))
-                    Text(
-                        text = "\uD83D\uDCCE $it",
-                        color = textColor.copy(alpha = 0.8f),
-                        style = MaterialTheme.typography.bodySmall
-                    )
+                if (message.isUser) {
+                    message.fileName?.let {
+                        Spacer(modifier = Modifier.height(8.dp))
+                        Surface(
+                            color = attachmentColor,
+                            shape = RoundedCornerShape(12.dp)
+                        ) {
+                            Row(
+                                modifier = Modifier.padding(horizontal = 10.dp, vertical = 6.dp),
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                Text(
+                                    text = "\uD83D\uDCCE $it",
+                                    color = textColor.copy(alpha = 0.9f),
+                                    style = MaterialTheme.typography.bodySmall
+                                )
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -214,9 +229,10 @@ fun MessageBubble(message: ChatMessage) {
 
 private fun formatMessageText(raw: String): String {
     return raw
-        .replace("*", "")
-        .replace(Regex("\\*\\s+"), "\u2022 ")
-        .replace("\n", "\n\n")
+        .replace(Regex("(?<=\\w)\\n(?=\\w)"), " ")
+        .replace(Regex("\\n{2,}"), "\n\n")
+        .replace(Regex("(?<=[^\\n])\\*\\s"), "\n• ")
+        .replace(Regex("\\*{1,}"), "")
+        .trim()
 }
-
 

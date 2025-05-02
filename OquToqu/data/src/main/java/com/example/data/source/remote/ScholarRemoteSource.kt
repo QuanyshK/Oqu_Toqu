@@ -1,5 +1,6 @@
 package com.example.data.source.remote
 
+import android.util.Log
 import com.example.domain.model.ScholarItem
 
 class ScholarRemoteSource(
@@ -28,7 +29,9 @@ class ScholarRemoteSource(
 
 
     private fun extractDoi(link: String?): String? {
-        val regex = Regex("""10\.\d{4,9}/[-._;()/:A-Z0-9]+""", RegexOption.IGNORE_CASE)
-        return link?.let { regex.find(it)?.value }
+        if (link.isNullOrBlank()) return null
+        val regex = Regex("""10\.\d{4,9}/[\w.()\-;:/]+""", RegexOption.IGNORE_CASE)
+        val match = regex.find(link)?.value
+        return match
     }
 }
