@@ -10,6 +10,8 @@
         android:name="com.example.oqutoqu.view.fragment.ProfileFragment"
         android:label="fragment_profile"
         tools:layout="@layout/fragment_profile" >
+        <deepLink
+            app:uri="oqutoqu://support" />
         <action
             android:id="@+id/action_profileFragment_to_loginFragment"
             app:destination="@id/loginFragment"
@@ -38,7 +40,8 @@
         android:name="com.example.oqutoqu.view.fragment.ScienceFragment"
         android:label="ScienceFragment"
         tools:layout="@layout/fragment_science">
-
+        <deepLink
+            app:uri="oqutoqu://scihub" />
         <argument
             android:name="doi"
             app:argType="string"

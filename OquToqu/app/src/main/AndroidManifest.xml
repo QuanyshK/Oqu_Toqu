@@ -31,6 +31,7 @@
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
                 <data android:scheme="oqutoqu" android:host="scihub" />
+                <data android:scheme="oqutoqu" android:host="support" />
             </intent-filter>
         </activity>
     </application>

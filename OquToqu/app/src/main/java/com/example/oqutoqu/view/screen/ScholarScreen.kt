@@ -3,7 +3,6 @@ package com.example.oqutoqu.view.screen
 import android.app.Activity
 import android.content.Intent
 import android.net.Uri
-import android.os.Bundle
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -26,7 +25,6 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import androidx.navigation.Navigation.findNavController
 import com.example.oqutoqu.R
 import com.example.oqutoqu.viewmodel.ScholarViewModel
 import org.koin.androidx.compose.koinViewModel
@@ -34,7 +32,6 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 fun ScholarScreen(
     viewModel: ScholarViewModel = koinViewModel(),
-    navController: NavController,
     initialQuery: String? = null
 ) {
     val items by viewModel.items.collectAsState()
@@ -149,17 +146,15 @@ fun ScholarScreen(
                                 Text(
                                     text = "DOI: $doi",
                                     style = MaterialTheme.typography.labelSmall.copy(
-                                        color = MaterialTheme.colorScheme.primary,
-                                        fontSize = 12.sp,
-                                        fontWeight = FontWeight.Medium
+                                        color = Color.Black,
+                                        fontSize = 12.sp
                                     ),
                                     maxLines = 1,
                                     overflow = TextOverflow.Ellipsis,
                                     modifier = Modifier.clickable {
-                                        val bundle = Bundle().apply {
-                                            putString("doi", doi)
-                                        }
-                                        navController.navigate(R.id.scienceFragment, bundle)
+                                        val uri = Uri.parse("oqutoqu://scihub?doi=$doi")
+                                        val intent = Intent(Intent.ACTION_VIEW, uri)
+                                        context.startActivity(intent)
                                     }
                                 )
                             }

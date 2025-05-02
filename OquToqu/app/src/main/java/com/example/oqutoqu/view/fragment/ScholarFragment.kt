@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.Fragment
-import androidx.navigation.findNavController
 import com.example.oqutoqu.view.screen.ScholarScreen
 
 class ScholarFragment : Fragment() {
@@ -18,7 +17,8 @@ class ScholarFragment : Fragment() {
     ): View {
         return ComposeView(requireContext()).apply {
             setContent {
-                ScholarScreen(navController = findNavController())            }
+                ScholarScreen()
+            }
         }
     }
 }

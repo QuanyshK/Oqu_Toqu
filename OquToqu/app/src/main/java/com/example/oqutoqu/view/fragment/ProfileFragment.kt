@@ -4,6 +4,7 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.view.*
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.oqutoqu.R
@@ -41,6 +42,18 @@ class ProfileFragment : Fragment() {
         profileViewModel.email.observe(viewLifecycleOwner) { email ->
             binding.tvEmail.text = email ?: "No email"
         }
+        val intent = requireActivity().intent
+        val deepLinkData = intent.data
+        if (deepLinkData?.host == "support") {
+            Toast.makeText(
+                requireContext(),
+                "Having trouble accessing articles? Please contact our support team via WhatsApp.",
+                Toast.LENGTH_LONG
+            ).show()
+
+            requireActivity().intent = Intent(intent).apply { data = null }
+        }
+
 
         binding.btnSupport.setOnClickListener {
             val number = getString(R.string.support_number)

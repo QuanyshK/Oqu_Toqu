@@ -31,7 +31,7 @@ class ScienceFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         if (!hasLoadedFromDeepLink) {
-            val deepLinkDoi = arguments?.getString("doi")
+            val deepLinkDoi = requireActivity().intent?.data?.getQueryParameter("doi")
             if (!deepLinkDoi.isNullOrBlank()) {
                 binding.etDoi.setText(deepLinkDoi)
                 viewModel.fetchPdf(deepLinkDoi)
@@ -63,6 +63,12 @@ class ScienceFragment : Fragment() {
             } else {
                 foundPdfUrl = null
                 binding.btnOpenPdf.visibility = View.GONE
+                    foundPdfUrl = null
+                    binding.btnOpenPdf.visibility = View.GONE
+                    Toast.makeText(requireContext(), "PDF not found. Redirecting to support...", Toast.LENGTH_SHORT).show()
+                    val intent = Intent(Intent.ACTION_VIEW, Uri.parse("oqutoqu://support"))
+                    startActivity(intent)
+
             }
         }
     }
