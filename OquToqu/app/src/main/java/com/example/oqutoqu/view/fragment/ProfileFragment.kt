@@ -9,17 +9,19 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.oqutoqu.R
 import com.example.oqutoqu.databinding.FragmentProfileBinding
-import com.example.oqutoqu.viewmodel.AuthViewModel
 import com.example.oqutoqu.viewmodel.ProfileViewModel
+import com.example.data.manager.AuthManager
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import androidx.navigation.NavOptions
-import com.example.data.manager.AuthManager
 
 class ProfileFragment : Fragment() {
+
     private var _binding: FragmentProfileBinding? = null
     private val binding get() = _binding!!
+
     private val profileViewModel: ProfileViewModel by viewModel()
     private lateinit var authManager: AuthManager
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ) = FragmentProfileBinding.inflate(inflater, container, false).also { _binding = it }.root
@@ -38,12 +40,14 @@ class ProfileFragment : Fragment() {
             )
             return
         }
+
         profileViewModel.loadUser()
         profileViewModel.email.observe(viewLifecycleOwner) { email ->
             binding.tvEmail.text = email ?: "No email"
         }
+
         val intent = requireActivity().intent
-        val deepLinkData = intent.data
+        val deepLinkData = intent?.data
         if (deepLinkData?.host == "support") {
             Toast.makeText(
                 requireContext(),
@@ -54,26 +58,27 @@ class ProfileFragment : Fragment() {
             requireActivity().intent = Intent(intent).apply { data = null }
         }
 
-
         binding.btnSupport.setOnClickListener {
             val number = getString(R.string.support_number)
             val url = "https://wa.me/$number"
-            val intent = Intent(Intent.ACTION_VIEW).apply {
-                data = Uri.parse(url)
-            }
-            startActivity(intent)
+            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(url)))
         }
 
         binding.btnLogout.setOnClickListener {
             profileViewModel.logout()
             authManager.clearToken()
-            findNavController().navigate(R.id.action_profileFragment_to_loginFragment,     null,
+            findNavController().navigate(
+                R.id.action_profileFragment_to_loginFragment,
+                null,
                 NavOptions.Builder()
                     .setPopUpTo(R.id.nav_graph, true)
-                    .build())
+                    .build()
+            )
         }
+
         binding.btnFaq.setOnClickListener {
-            findNavController().navigate(R.id.action_profileFragment_to_faqBottomSheetFragment2)
+            findNavController().navigate(R.id.faqBottomSheetFragment)
+            requireActivity().intent = Intent(intent).apply { data = null }
         }
     }
 

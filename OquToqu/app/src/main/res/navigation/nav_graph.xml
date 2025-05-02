@@ -60,6 +60,8 @@
         android:id="@+id/faqBottomSheetFragment"
         android:name="com.example.oqutoqu.view.fragment.FaqBottomSheetFragment"
         android:label="FaqBottomSheetFragment" >
+        <deepLink
+            app:uri="oqutoqu://faq" />
         <action
             android:id="@+id/action_faqBottomSheetFragment_to_profileFragment"
             app:destination="@id/profileFragment" />
