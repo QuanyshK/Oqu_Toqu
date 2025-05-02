@@ -27,6 +27,9 @@
         android:name="com.example.oqutoqu.view.fragment.LoginFragment"
         android:label="LoginFragment"
         tools:layout="@layout/fragment_login">
+
+        <deepLink
+            app:uri="oqutoqu://login" />
         <action
             android:id="@+id/action_loginFragment_to_profileFragment"
             app:destination="@id/profileFragment"

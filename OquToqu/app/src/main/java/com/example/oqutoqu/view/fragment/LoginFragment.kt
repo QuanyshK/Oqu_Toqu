@@ -53,6 +53,11 @@ class LoginFragment : Fragment() {
                 .build()
             val client = GoogleSignIn.getClient(requireContext(), gso)
             client.signOut().addOnCompleteListener { launcher.launch(client.signInIntent) }
+            val data = requireActivity().intent?.data
+            if (data?.host == "login") {
+                Toast.makeText(requireContext(), "You have been logged out", Toast.LENGTH_SHORT).show()
+                requireActivity().intent = Intent()
+            }
         }
     }
 

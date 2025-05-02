@@ -67,13 +67,9 @@ class ProfileFragment : Fragment() {
         binding.btnLogout.setOnClickListener {
             profileViewModel.logout()
             authManager.clearToken()
-            findNavController().navigate(
-                R.id.action_profileFragment_to_loginFragment,
-                null,
-                NavOptions.Builder()
-                    .setPopUpTo(R.id.nav_graph, true)
-                    .build()
-            )
+            val logoutIntent = Intent(Intent.ACTION_VIEW, Uri.parse("oqutoqu://login"))
+            startActivity(logoutIntent)
+            requireActivity().finish()
         }
 
         binding.btnFaq.setOnClickListener {

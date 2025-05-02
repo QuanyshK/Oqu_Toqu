@@ -47,23 +47,27 @@
                     android:textColor="@color/black"
                     android:layout_marginBottom="16dp" />
 
-                <Button
+                <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnSearch"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Find Article"
-                    android:backgroundTint="@color/primary_blue"
+                    android:background="@drawable/bg_button_primary"
                     android:textColor="@color/white"
-                    android:layout_marginBottom="12dp" />
+                    android:layout_marginBottom="12dp"
+                    app:cornerRadius="16dp"
+                    style="@style/Widget.Material3.Button" />
 
-                <Button
+                <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnOpenPdf"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:visibility="gone"
                     android:text="Open PDF"
                     android:backgroundTint="@color/primary_blue"
-                    android:textColor="@android:color/white" />
+                    android:background="@color/background"
+                    android:textColor="@color/white"
+                    />
             </LinearLayout>
         </androidx.cardview.widget.CardView>
     </LinearLayout>
