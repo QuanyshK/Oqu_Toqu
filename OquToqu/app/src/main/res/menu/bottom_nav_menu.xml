@@ -2,19 +2,19 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/scholarFragment"
-        android:icon="@drawable/ic_launcher_foreground"
+        android:icon="@drawable/scholar"
         android:title="Search" />
     <item
         android:id="@+id/chatFragment"
-        android:icon="@drawable/ic_launcher_foreground"
+        android:icon="@drawable/gemini"
         android:title="Chat" />
     <item
         android:id="@+id/scienceFragment"
-        android:icon="@drawable/ic_launcher_foreground"
+        android:icon="@drawable/scihub"
         android:title="Sci Hack" />
 
     <item
         android:id="@+id/profileFragment"
-        android:icon="@drawable/ic_launcher_foreground"
+        android:icon="@drawable/profile"
         android:title="Profile" />
 </menu>
