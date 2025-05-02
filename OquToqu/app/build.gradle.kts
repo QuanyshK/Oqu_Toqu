@@ -17,6 +17,7 @@ android {
         targetSdk = 35
         versionCode = 1
         versionName = "1.0"
+        vectorDrawables.useSupportLibrary = true
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -70,7 +71,7 @@ dependencies {
     // jetpack navigation
     implementation(libs.navigation.fragment)
     implementation(libs.navigation.ui)
-
+    implementation("com.google.android.material:material:1.9.0")
     // modules
     implementation(project(":domain"))
     implementation(project(":data"))

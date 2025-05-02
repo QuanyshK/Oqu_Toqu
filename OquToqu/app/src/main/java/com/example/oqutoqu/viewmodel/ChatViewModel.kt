@@ -54,10 +54,8 @@ class ChatViewModel(
                     chatDao.getAllEntities().firstOrNull()?.map { it.toDomain() }?.filter {
                         it.userToken == currentToken
                     }?.also {
-                        println("Room FETCH (user only): ${it.size} messages")
                     } ?: emptyList()
                 } catch (roomError: Exception) {
-                    println("Room fetch ERROR: ${roomError.message}")
                     emptyList()
                 }
 
@@ -96,7 +94,6 @@ class ChatViewModel(
         _messages.value += userMessage
 
         if (!isConnected) {
-            println("OFFLINE MODE: saving to Room")
             saveMessageOffline(userMessage)
 
             val notice = ChatMessage(
@@ -120,7 +117,6 @@ class ChatViewModel(
                 _messages.value = updated
                 updated.forEach { saveMessageOffline(it) }
             } catch (e: Exception) {
-                println("❌ Network failure during send: ${e.message}")
                 saveMessageOffline(userMessage)
 
                 val notice = ChatMessage(
@@ -139,7 +135,6 @@ class ChatViewModel(
 
     fun onConnectionChanged(isConnected: Boolean) {
         if (!isConnected && lastConnectionStatus) {
-            println("Connection lost")
 
             val alreadyHasNotice = _messages.value.any {
                 it.botResponse?.contains("offline", ignoreCase = true) == true &&
@@ -159,7 +154,6 @@ class ChatViewModel(
                 saveMessageOffline(notice)
             }
         } else if (isConnected && !lastConnectionStatus) {
-            println("🔔onnection restored")
 
             _messages.value = _messages.value.filterNot {
                 it.botResponse?.contains("offline", ignoreCase = true) == true ||
@@ -184,9 +178,7 @@ class ChatViewModel(
         viewModelScope.launch {
             try {
                 val id = chatDao.insert(ChatEntity.fromDomain(message))
-                println("Room INSERT: $id | ${message.text ?: message.botResponse}")
             } catch (e: Exception) {
-                println("Room insert ERROR: ${e.message}")
             }
         }
     }
