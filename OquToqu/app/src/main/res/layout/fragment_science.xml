@@ -64,6 +64,9 @@
                     android:layout_height="wrap_content"
                     android:visibility="gone"
                     android:text="Open PDF"
+                    app:cornerRadius="16dp"
+                    android:background="@drawable/bg_button_primary"
+                    android:layout_marginBottom="12dp"
                     android:backgroundTint="@color/primary_blue"
                     android:textColor="@color/white"
                     />
@@ -72,8 +75,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:visibility="gone"
-
                     android:text="Download PDF"
+                    android:background="@drawable/bg_button_primary"
                     android:backgroundTint="@color/primary_blue"
                     android:textColor="@color/white"
                     app:cornerRadius="16dp" />
