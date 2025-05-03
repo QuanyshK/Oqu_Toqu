@@ -31,5 +31,10 @@ class ScienceViewModel(private val repository: SciHubRepository) : ViewModel() {
             _sciHubResult.value = result
         }
     }
+    fun clearResult() {
+        _sciHubResult.value = null
+        lastDoi = null
+        lastPdfUrl = null
+    }
 }
 

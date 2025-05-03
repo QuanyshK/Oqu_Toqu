@@ -30,6 +30,7 @@ class ScienceViewModelTest {
     fun tearDown() {
         Dispatchers.resetMain()
     }
+
     @Test
     fun `fetchPdf should update sciHubResult StateFlow on success`() = runTest {
         val result = SciHubResult("url", "pdf")
@@ -39,5 +40,20 @@ class ScienceViewModelTest {
         testScheduler.advanceUntilIdle()
 
         assertEquals(result, viewModel.sciHubResult.value)
+    }
+
+    @Test
+    fun `clearResult should reset sciHubResult and cached values`() = runTest {
+        val result = SciHubResult("url", "pdf")
+        whenever(repo.fetchPdf("10.1234/test")).thenReturn(result)
+
+        viewModel.fetchPdf("10.1234/test")
+        testScheduler.advanceUntilIdle()
+
+        viewModel.clearResult()
+
+        assertEquals(null, viewModel.sciHubResult.value)
+        assertEquals(null, viewModel.lastDoi)
+        assertEquals(null, viewModel.lastPdfUrl)
     }
 }

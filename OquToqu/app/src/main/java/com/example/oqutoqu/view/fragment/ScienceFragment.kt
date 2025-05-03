@@ -46,8 +46,10 @@ class ScienceFragment : Fragment() {
             val doi = binding.etDoi.text.toString().trim()
             if (doi.isEmpty()) {
                 hidePdfButtons()
+                viewModel.clearResult()
                 Toast.makeText(requireContext(), "Please enter DOI", Toast.LENGTH_SHORT).show()
             } else {
+                hasUserSearchedManually = true
                 viewModel.fetchPdf(doi)
             }
         }
