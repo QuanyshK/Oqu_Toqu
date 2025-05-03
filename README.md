@@ -44,4 +44,8 @@ We **do not encourage or endorse** bypassing paywalls or violating copyright law
 
 ---
 
-## 📸 Demo Video
+## 📸 Demo 
+
+https://github.com/user-attachments/assets/02159028-fd1b-475d-ab81-fe4420cc3472
+
+Video
