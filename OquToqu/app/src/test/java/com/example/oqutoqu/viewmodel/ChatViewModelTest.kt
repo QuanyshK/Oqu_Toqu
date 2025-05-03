@@ -9,12 +9,10 @@ import android.net.NetworkInfo
 import android.net.Uri
 import android.provider.OpenableColumns
 import com.example.data.source.local.ChatDao
-import com.example.domain.model.ChatMessage
 import com.example.domain.usecase.GetChatMessagesUseCase
 import com.example.domain.usecase.SendChatMessageUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.test.*
 import org.junit.Before
 import org.junit.Test

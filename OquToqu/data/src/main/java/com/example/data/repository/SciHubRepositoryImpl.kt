@@ -4,9 +4,9 @@ import com.example.domain.model.SciHubResult
 import com.example.domain.repository.SciHubRepository
 import com.example.scihubparser.SciHubParser
 
-class SciHubRepositoryImpl : SciHubRepository {
+class SciHubRepositoryImpl(    private val parser: SciHubParser = SciHubParser() ) : SciHubRepository {
 
-    private val parser = SciHubParser()
+
 
     override suspend fun fetchPdf(doi: String): SciHubResult? {
         val result = parser.parse(doi)

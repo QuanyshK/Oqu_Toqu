@@ -17,7 +17,6 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 
@@ -25,8 +24,7 @@ class ChatViewModel(
     private val context: Context,
     private val getMessages: GetChatMessagesUseCase,
     private val sendMessage: SendChatMessageUseCase,
-    private val chatDao: ChatDao,
-    private val coroutineDispatcher: CoroutineDispatcher = Dispatchers.Main
+    private val chatDao: ChatDao
 ) : ViewModel() {
 
     private val _messages = MutableStateFlow<List<ChatMessage>>(emptyList())
