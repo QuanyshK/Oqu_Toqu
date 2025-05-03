@@ -2,6 +2,7 @@ package com.example.oqutoqu.view.fragment
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
@@ -37,6 +38,7 @@ class LoginFragment : Fragment() {
                 }
             }
         } catch (e: ApiException) {
+            Log.e("GoogleSignIn", "Google SignIn failed, code=${e.statusCode}", e)
             Toast.makeText(requireContext(), "Google SignIn Error", Toast.LENGTH_SHORT).show()
         }
     }

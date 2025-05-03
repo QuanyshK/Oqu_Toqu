@@ -3,18 +3,18 @@
     <item
         android:id="@+id/scholarFragment"
         android:icon="@drawable/scholar"
-        android:title="Search" />
+        android:title="@string/search" />
     <item
         android:id="@+id/chatFragment"
         android:icon="@drawable/gemini"
-        android:title="Chat" />
+        android:title="@string/chat" />
     <item
         android:id="@+id/scienceFragment"
         android:icon="@drawable/scihub"
-        android:title="Sci Hack" />
+        android:title="@string/sci_hack" />
 
     <item
         android:id="@+id/profileFragment"
         android:icon="@drawable/profile"
-        android:title="Profile" />
+        android:title="@string/profile" />
 </menu>

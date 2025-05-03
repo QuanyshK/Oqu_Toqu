@@ -52,6 +52,7 @@ dependencies {
     implementation(libs.material)
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
+    testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     implementation("com.google.firebase:firebase-auth-ktx")
@@ -95,14 +96,6 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.8.5")
     implementation("androidx.activity:activity-compose:1.8.0")
     implementation("io.insert-koin:koin-core:4.0.2")
-    testImplementation(libs.junit)
-    testImplementation("org.mockito.kotlin:mockito-kotlin:5.2.1")
-    testImplementation("org.mockito:mockito-inline:5.2.0")
-    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.9.0")
-    testImplementation("io.mockk:mockk:1.13.8")
-    testImplementation("androidx.test:core:1.5.0")
-    testImplementation("androidx.arch.core:core-testing:2.2.0")
-
-
+    implementation("com.google.accompanist:accompanist-systemuicontroller:0.33.0-alpha")
 
 }

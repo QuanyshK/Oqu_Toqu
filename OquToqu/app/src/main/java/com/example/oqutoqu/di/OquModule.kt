@@ -55,7 +55,7 @@ val scienceModule = module {
     single<SciHubRepository> { SciHubRepositoryImpl() }
     viewModel { ScienceViewModel(get()) }
 }
-private const val BASE_URL = "http://192.168.0.10:8080/"
+private const val BASE_URL = "http://192.168.104.65:8080/"
 
 val networkModule = module {
 
