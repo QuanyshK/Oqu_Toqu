@@ -13,6 +13,7 @@ import androidx.lifecycle.lifecycleScope
 import com.example.oqutoqu.databinding.FragmentScienceBinding
 import com.example.oqutoqu.view.service.PdfDownloadService
 import com.example.oqutoqu.viewmodel.ScienceViewModel
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -22,55 +23,46 @@ class ScienceFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val viewModel: ScienceViewModel by viewModel()
-    private var foundPdfUrl: String? = null
     private var hasLoadedFromDeepLink = false
-    private val notificationPermissionLauncher =
-        registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
-            if (isGranted) {
-                startPdfDownload()
-            } else {
-                Toast.makeText(requireContext(), "Notification permission denied", Toast.LENGTH_SHORT).show()
-            }
-        }
+
+    private val notificationPermissionLauncher = registerForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) { granted ->
+        if (granted) startPdfDownload()
+        else Toast.makeText(requireContext(), "Notification permission denied", Toast.LENGTH_SHORT).show()
+    }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         _binding = FragmentScienceBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        if (!hasLoadedFromDeepLink) {
-            val deepLinkDoi = requireActivity().intent?.data?.getQueryParameter("doi")
-            if (!deepLinkDoi.isNullOrBlank()) {
-                binding.etDoi.setText(deepLinkDoi)
-                viewModel.fetchPdf(deepLinkDoi)
-                hasLoadedFromDeepLink = true
-            }
-        }
+        handleDeepLinkIfNeeded()
 
         binding.btnSearch.setOnClickListener {
             val doi = binding.etDoi.text.toString().trim()
             if (doi.isEmpty()) {
-                binding.btnOpenPdf.visibility = View.GONE
+                hidePdfButtons()
                 Toast.makeText(requireContext(), "Please enter DOI", Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
+            } else {
+                viewModel.fetchPdf(doi)
             }
-            viewModel.fetchPdf(doi)
         }
 
         binding.btnOpenPdf.setOnClickListener {
-            foundPdfUrl?.let { url ->
+            viewModel.lastPdfUrl?.let { url ->
                 startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(url)))
             }
         }
+
         binding.btnDownloadPdf.setOnClickListener {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                if (requireContext().checkSelfPermission(android.Manifest.permission.POST_NOTIFICATIONS)
-                    != PackageManager.PERMISSION_GRANTED) {
-                    notificationPermissionLauncher.launch(android.Manifest.permission.POST_NOTIFICATIONS)
+                val permission = android.Manifest.permission.POST_NOTIFICATIONS
+                if (requireContext().checkSelfPermission(permission) != PackageManager.PERMISSION_GRANTED) {
+                    notificationPermissionLauncher.launch(permission)
                 } else {
                     startPdfDownload()
                 }
@@ -79,31 +71,59 @@ class ScienceFragment : Fragment() {
             }
         }
 
-        viewModel.sciHubResult.observe(viewLifecycleOwner) { result ->
-            if (viewModel.lastPdfUrl != null) {
-                foundPdfUrl = viewModel.lastPdfUrl
-                binding.btnOpenPdf.visibility = View.VISIBLE
-                binding.btnDownloadPdf.visibility = View.VISIBLE
-                binding.btnOpenPdf.text = "Open PDF"
-            } else {
-                foundPdfUrl = null
-                binding.btnOpenPdf.visibility = View.GONE
-                    foundPdfUrl = null
-                    binding.btnOpenPdf.visibility = View.GONE
-                    Toast.makeText(requireContext(), "PDF not found. Redirecting to support...", Toast.LENGTH_SHORT).show()
-                    val intent = Intent(Intent.ACTION_VIEW, Uri.parse("oqutoqu://support"))
-                    startActivity(intent)
+        collectSciHubResult()
+    }
 
+    private var hasUserSearchedManually = false
+
+    private fun collectSciHubResult() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.sciHubResult.collectLatest { result ->
+                if (result?.pdfLink != null && viewModel.lastPdfUrl != null) {
+                    showPdfButtons()
+                } else {
+                    hidePdfButtons()
+                    if (hasUserSearchedManually) {
+                        Toast.makeText(requireContext(), "PDF not found. Redirecting to support...", Toast.LENGTH_SHORT).show()
+                        startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("oqutoqu://support")))
+                    }
+                }
             }
         }
     }
+
+
+    private fun handleDeepLinkIfNeeded() {
+        if (hasLoadedFromDeepLink) return
+        val deepLinkDoi = requireActivity().intent?.data?.getQueryParameter("doi")
+        if (!deepLinkDoi.isNullOrBlank()) {
+            binding.etDoi.setText(deepLinkDoi)
+            viewModel.fetchPdf(deepLinkDoi)
+            hasLoadedFromDeepLink = true
+        }
+    }
+
     private fun startPdfDownload() {
-        foundPdfUrl?.let { url ->
+        val url = viewModel.lastPdfUrl
+        if (url != null) {
             val intent = Intent(requireContext(), PdfDownloadService::class.java).apply {
                 putExtra("pdf_url", url)
             }
             requireContext().startService(intent)
-        } ?: Toast.makeText(requireContext(), "No PDF URL available", Toast.LENGTH_SHORT).show()
+        } else {
+            Toast.makeText(requireContext(), "No PDF URL available", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun showPdfButtons() {
+        binding.btnOpenPdf.visibility = View.VISIBLE
+        binding.btnDownloadPdf.visibility = View.VISIBLE
+        binding.btnOpenPdf.text = "Open PDF"
+    }
+
+    private fun hidePdfButtons() {
+        binding.btnOpenPdf.visibility = View.GONE
+        binding.btnDownloadPdf.visibility = View.GONE
     }
 
     override fun onDestroyView() {

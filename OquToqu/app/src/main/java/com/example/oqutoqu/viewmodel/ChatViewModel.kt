@@ -13,6 +13,8 @@ import com.example.domain.model.ChatMessage
 import com.example.domain.usecase.GetChatMessagesUseCase
 import com.example.domain.usecase.SendChatMessageUseCase
 import com.example.oqutoqu.receiver.NetworkReceiver
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.first
@@ -23,7 +25,8 @@ class ChatViewModel(
     private val context: Context,
     private val getMessages: GetChatMessagesUseCase,
     private val sendMessage: SendChatMessageUseCase,
-    private val chatDao: ChatDao
+    private val chatDao: ChatDao,
+    private val coroutineDispatcher: CoroutineDispatcher = Dispatchers.Main
 ) : ViewModel() {
 
     private val _messages = MutableStateFlow<List<ChatMessage>>(emptyList())

@@ -6,12 +6,14 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.domain.model.SciHubResult
 import com.example.domain.repository.SciHubRepository
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
 class ScienceViewModel(private val repository: SciHubRepository) : ViewModel() {
 
-    private val _sciHubResult = MutableLiveData<SciHubResult?>()
-    val sciHubResult: LiveData<SciHubResult?> = _sciHubResult
+    private val _sciHubResult = MutableStateFlow<SciHubResult?>(null)
+    val sciHubResult: StateFlow<SciHubResult?> = _sciHubResult
 
     var lastDoi: String? = null
         private set
@@ -30,3 +32,4 @@ class ScienceViewModel(private val repository: SciHubRepository) : ViewModel() {
         }
     }
 }
+
