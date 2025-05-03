@@ -1,37 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:padding="24dp"
-    android:background="@android:color/white">
+    android:layout_margin="16dp"
+    app:cardCornerRadius="24dp"
+    app:cardElevation="6dp"
+    app:cardBackgroundColor="@color/softBlueBackground"
+    app:cardUseCompatPadding="true">
 
-    <TextView
-        android:id="@+id/tvFaqTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="What is Oqu Toqu?"
-        android:textStyle="bold"
-        android:textSize="18sp"
-        android:textColor="@color/black"
-        android:layout_marginBottom="12dp" />
-
-    <TextView
-        android:id="@+id/tvFaqDescription"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Oqu Toqu is an app that gives researchers worldwide access to articles using Google Scholar and Sci-Hub. It also features an AI-powered summarizer that helps you understand key points in any scientific paper."
-        android:textSize="15sp"
-        android:textColor="@color/black" />
+        android:orientation="vertical"
+        android:padding="20dp">
+        <ImageView
+            android:id="@+id/logoImage"
+            android:layout_width="160dp"
+            android:layout_height="160dp"
+            android:layout_gravity="center"
+            android:layout_marginBottom="16dp"
+            android:src="@drawable/faq_cat_icon"
+            android:contentDescription="@string/app_name" />
+        <TextView
+            android:id="@+id/tvFaqTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/what_is_oqu_toqu"
+            android:textStyle="bold"
+            android:textSize="18sp"
+            android:textColor="@color/deepBlue"
+            android:layout_marginBottom="10dp"
+            android:fontFamily="sans-serif-medium" />
 
-    <TextView
-        android:id="@+id/tvDisclaimer"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Disclaimer: Sci-Hub is used strictly for educational and research purposes only"
-        android:textSize="13sp"
-        android:textColor="@color/gray"
-        android:layout_marginTop="12dp"
-        android:layout_marginBottom="24dp" />
+        <TextView
+            android:id="@+id/tvFaqDescription"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/description"
+            android:textSize="15sp"
+            android:textColor="@color/darkText"
+            android:lineSpacingExtra="4dp"
+            android:fontFamily="sans-serif" />
 
-</LinearLayout>
+        <TextView
+            android:id="@+id/tvDisclaimer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/disclaimer"
+            android:textSize="13sp"
+            android:textColor="@color/gray"
+            android:layout_marginTop="14dp"
+            android:fontFamily="sans-serif-light"
+            android:lineSpacingExtra="2dp" />
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>

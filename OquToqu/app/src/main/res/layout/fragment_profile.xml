@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background"
+    android:background="@color/softBlueBackground"
     android:padding="24dp">
 
     <LinearLayout
@@ -11,92 +13,164 @@
         android:orientation="vertical"
         android:gravity="center_horizontal">
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/your_profile"
+            android:textColor="@color/deepBlue"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:fontFamily="sans-serif-medium"
+            android:layout_marginBottom="24dp" />
+
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="32dp"
-            android:radius="16dp"
-            android:elevation="4dp"
-            android:backgroundTint="@android:color/white">
+            android:layout_marginBottom="24dp"
+            app:cardCornerRadius="20dp"
+            app:cardElevation="5dp"
+            app:cardBackgroundColor="@android:color/white">
 
-            <TextView
-                android:id="@+id/tvEmail"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="your.email@example.com"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                android:textColor="#222222"
-                android:gravity="center"
-                android:padding="16dp" />
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:padding="16dp"
+                tools:ignore="UseCompoundDrawables">
+
+                <ImageView
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:src="@drawable/person"
+                    app:tint="@color/deepBlue"
+                    android:layout_marginEnd="12dp"
+                    android:contentDescription="@string/user_icon" />
+
+                <TextView
+                    android:id="@+id/tvEmail"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/email_example"
+                    android:textSize="16sp"
+                    android:textColor="@color/darkText"
+                    android:fontFamily="sans-serif-medium" />
+            </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
         <com.google.android.material.card.MaterialCardView
+            android:id="@+id/btnFaq"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
-            android:radius="16dp"
-            android:elevation="4dp"
-            android:backgroundTint="@android:color/white">
+            app:cardCornerRadius="16dp"
+            app:cardElevation="4dp"
+            app:cardBackgroundColor="@android:color/white"
+            android:clickable="true"
+            android:foreground="?attr/selectableItemBackground">
 
-            <TextView
-                android:id="@+id/btnSupport"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Tech Support"
-                android:textColor="@color/pink"
-                android:textSize="16sp"
-                android:gravity="center"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
                 android:padding="16dp"
-                android:background="?attr/selectableItemBackground"
-                android:clickable="true"
-                android:focusable="true" />
+                tools:ignore="UseCompoundDrawables">
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_marginEnd="16dp"
+                    android:contentDescription="@string/qa"
+                    android:src="@drawable/forum"
+                    app:tint="@color/primary_blue" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/what_is_oqu_toqu"
+                    android:textSize="16sp"
+                    android:textColor="@color/darkText"
+                    android:fontFamily="sans-serif-medium" />
+            </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
         <com.google.android.material.card.MaterialCardView
+            android:id="@+id/btnSupport"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
-            android:radius="16dp"
-            android:elevation="4dp"
-            android:backgroundTint="@android:color/white">
+            app:cardCornerRadius="16dp"
+            app:cardElevation="4dp"
+            app:cardBackgroundColor="@android:color/white"
+            android:clickable="true"
+            android:foreground="?attr/selectableItemBackground">
 
-            <TextView
-                android:id="@+id/btnFaq"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="What is Oqu Toqu?"
-                android:textColor="@color/primary_blue"
-                android:textSize="16sp"
-                android:gravity="center"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
                 android:padding="16dp"
-                android:background="?attr/selectableItemBackground"
-                android:clickable="true"
-                android:focusable="true" />
+                tools:ignore="UseCompoundDrawables">
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_marginEnd="16dp"
+                    android:contentDescription="@string/tech_sup"
+                    android:src="@drawable/support_agent"
+                    app:tint="@color/pink" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/tech_support"
+                    android:textSize="16sp"
+                    android:textColor="@color/darkText"
+                    android:fontFamily="sans-serif-medium" />
+            </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
         <com.google.android.material.card.MaterialCardView
+            android:id="@+id/btnLogout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="32dp"
-            android:radius="16dp"
-            android:elevation="4dp"
-            android:backgroundTint="@android:color/white">
+            android:layout_marginBottom="16dp"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="4dp"
+            app:cardBackgroundColor="@android:color/white"
+            android:clickable="true"
+            android:foreground="?attr/selectableItemBackground">
 
-            <TextView
-                android:id="@+id/btnLogout"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Log out"
-                android:textColor="@color/red"
-                android:textSize="16sp"
-                android:gravity="center"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
                 android:padding="16dp"
-                android:background="?attr/selectableItemBackground"
-                android:clickable="true"
-                android:focusable="true" />
+                tools:ignore="UseCompoundDrawables">
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_marginEnd="16dp"
+                    android:contentDescription="@string/logout"
+                    android:src="@drawable/logout"
+                    app:tint="@color/red" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/log_out"
+                    android:textSize="16sp"
+                    android:textColor="@color/darkText"
+                    android:fontFamily="sans-serif-medium" />
+            </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
-
-
     </LinearLayout>
 </ScrollView>

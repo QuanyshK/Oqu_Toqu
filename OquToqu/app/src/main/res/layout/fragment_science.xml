@@ -1,35 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@color/background"
+    android:background="@color/softBlueBackground"
     android:padding="24dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:gravity="center_horizontal">
 
         <TextView
-            android:id="@+id/tvInstructions"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Enter the DOI of a research paper to find its PDF.\n\nIf you see 'PDF not found', the article may not be available. We recommend using articles published before 2021.\n\nIf you get a 503 or similar error, try using a different article from Google Scholar."
-            android:textSize="14sp"
-            android:textColor="@color/gray"
-            android:padding="12dp"
-            android:background="@android:color/white"
-            android:elevation="2dp"
-            android:layout_marginBottom="24dp" />
+            android:text="@string/search_by_doi"
+            android:textSize="20sp"
+            android:textColor="@color/deepBlue"
+            android:textStyle="bold"
+            android:fontFamily="sans-serif-medium"
+            android:layout_marginBottom="16dp" />
 
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="32dp"
-            android:background="@color/white"
             app:cardCornerRadius="16dp"
-            app:cardElevation="6dp">
+            app:cardElevation="3dp"
+            app:cardBackgroundColor="@android:color/white"
+            android:layout_marginBottom="24dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="4dp"
+                    android:background="@color/primary_blue" />
+
+                <TextView
+                    android:id="@+id/tvInstructions"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/instructions"
+                    android:textSize="14sp"
+                    android:textColor="@color/gray"
+                    android:lineSpacingExtra="4dp"
+                    android:padding="16dp" />
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="20dp"
+            app:cardElevation="5dp"
+            app:cardBackgroundColor="@android:color/white"
+            android:layout_marginBottom="16dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -37,24 +66,37 @@
                 android:orientation="vertical"
                 android:padding="20dp">
 
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/doi_link"
+                    android:textSize="14sp"
+                    android:textColor="@color/gray"
+                    android:layout_marginBottom="8dp" />
+
                 <EditText
                     android:id="@+id/etDoi"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Enter DOI link"
-                    android:padding="12dp"
-                    android:background="@drawable/bg_input"
+                    android:autofillHints=""
+                    android:hint="@string/sample_doi"
+                    android:background="@drawable/bg_edittext_rounded"
+                    android:padding="14dp"
                     android:textColor="@color/black"
-                    android:layout_marginBottom="16dp" />
+                    android:textColorHint="@color/gray"
+                    android:inputType="text"
+                    android:fontFamily="sans-serif"
+                    android:layout_marginBottom="20dp" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnSearch"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Find Article"
-                    android:background="@drawable/bg_button_primary"
+                    android:text="@string/find_article"
                     android:textColor="@color/white"
-                    android:layout_marginBottom="12dp"
+                    android:backgroundTint="@color/primary_blue"
+                    android:textAllCaps="false"
+                    android:layout_marginBottom="16dp"
                     app:cornerRadius="16dp"
                     style="@style/Widget.Material3.Button" />
 
@@ -63,22 +105,22 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:visibility="gone"
-                    android:text="Open PDF"
-                    app:cornerRadius="16dp"
-                    android:background="@drawable/bg_button_primary"
-                    android:layout_marginBottom="12dp"
-                    android:backgroundTint="@color/primary_blue"
+                    android:text="@string/open_pdf"
                     android:textColor="@color/white"
-                    />
+                    android:backgroundTint="@color/primary_blue"
+                    android:textAllCaps="false"
+                    android:layout_marginBottom="12dp"
+                    app:cornerRadius="16dp" />
+
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnDownloadPdf"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:visibility="gone"
-                    android:text="Download PDF"
-                    android:background="@drawable/bg_button_primary"
-                    android:backgroundTint="@color/primary_blue"
+                    android:text="@string/download_pdf"
                     android:textColor="@color/white"
+                    android:backgroundTint="@color/primary_blue"
+                    android:textAllCaps="false"
                     app:cornerRadius="16dp" />
             </LinearLayout>
         </androidx.cardview.widget.CardView>

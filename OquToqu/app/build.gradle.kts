@@ -96,4 +96,6 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.8.5")
     implementation("androidx.activity:activity-compose:1.8.0")
     implementation("io.insert-koin:koin-core:4.0.2")
+    implementation("com.google.accompanist:accompanist-systemuicontroller:0.33.0-alpha")
+
 }
