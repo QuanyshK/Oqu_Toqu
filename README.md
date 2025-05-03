@@ -19,6 +19,16 @@
 
 ---
 
+## ⚠️ Disclaimer on Sci-Hub
+
+This project uses the [`scihubparser`](https://github.com/QuanyshK/scihubparser) library **strictly for educational and demonstrational purposes**.  
+We **do not encourage or endorse** bypassing paywalls or violating copyright laws.
+
+> Using Sci-Hub may be illegal in your country and could pose security and ethical risks.  
+> You are solely responsible for your actions if you choose to use it.
+
+---
+
 ## 🛠️ Tech Stack
 
 | Category              | Technology / Library                                |
