@@ -1,4 +1,4 @@
-# CODE_OF_CONDUCT.md
+# CODE\_OF\_CONDUCT.md
 
 # Contributor Covenant Code of Conduct
 
@@ -34,16 +34,15 @@ Community leaders have the right and responsibility to remove, edit, or reject c
 
 ## Scope
 
-This Code of Conduct applies within all community spaces, and also applies when an individual is officially representing the community in public spaces. Examples of representing our community include using an official e-mail address, posting via an official social media account, or acting as an appointed representative at an online or offline event.
+When you're in any of our community spaces or officially representing the community in public settings, this Code of Conduct applies. This includes activities like communicating from an official email address, posting through an official social media account, or serving as a designated representative at events, whether they're held online or in person.
 
 ## Enforcement
 
-Instances of abusive, harassing, or otherwise unacceptable behavior may be reported to the community leaders responsible for enforcement at [INSERT CONTACT EMAIL]. All complaints will be reviewed and investigated promptly and fairly.
+Instances of abusive, harassing, or otherwise unacceptable behavior may be reported to the community leaders responsible for enforcement at \[INSERT CONTACT EMAIL]. All complaints will be reviewed and investigated promptly and fairly.
 
 All community leaders are obligated to respect the privacy and security of the reporter of any incident.
 
 ## Attribution
 
-This Code of Conduct is adapted from the [Contributor Covenant][homepage], version 2.0, available at https://www.contributor-covenant.org/version/2/0/code_of_conduct.html.
+This Code of Conduct is adapted from the [Contributor Covenant](https://www.contributor-covenant.org), version 2.0, available at https://www.contributor-covenant.org/version/2/0/code\_of\_conduct.html.
 
-[homepage]: https://www.contributor-covenant.org
