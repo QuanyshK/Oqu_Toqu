@@ -62,6 +62,7 @@ For security vulnerabilities, please refer to our [Security Policy](SECURITY.md)
 - **Kobeisinuly Kuanysh** ([@QuanyshK](https://github.com/QuanyshK))
 - **Saduakhas Olzhas** ([@Tasherokk](https://github.com/Tasherokk))
 - **Mukhtaruly Ernar** ([@ErnarM04](https://github.com/ErnarM04))
+- **Zhumanova Zhanel** ([@zhanel01](https://github.com/zhanel01))
 
 ### Original Project Contributors:
 - **Sazanova Aruzhan** ([@Xydownik](https://github.com/Xydownik))
